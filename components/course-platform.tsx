@@ -646,6 +646,12 @@ function CoursePlatformContent() {
     return moduleIndex <= 3; // Locks modules 0, 1, 2, and 3
   }
 
+  const hasCompletedRequiredLessons = (completedCourses: {[key: number]: number[]}) => {
+    // Module 5 (index 4) lessons 50, 51, and 52 correspond to indices 0, 1, and 2
+    const module5Completions = completedCourses[4] || [];
+    return module5Completions.includes(0) && module5Completions.includes(1) && module5Completions.includes(2);
+  };
+
   if (!mounted) {
     return null
   }
@@ -657,8 +663,8 @@ function CoursePlatformContent() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-200">
-        <h1 className="text-4xl font-bold mb-8">Entre no seu curso da SBC:</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full px-4">
+        <h1 className="text-4xl font-bold mb-8 text-center">Entre no seu curso da SBC:</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full px-4 mx-auto">
           <div className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between transform hover:scale-105">
             <div>
               <h2 className="text-2xl font-semibold mb-4">Technical Product Manager Training (Tech for PMs)</h2>
@@ -775,6 +781,8 @@ function CoursePlatformContent() {
                   <RecentCompletions modules={modules} />
                 </div>
               </div>
+
+              
             </div>
             {modules.map((moduleItem, moduleIndex) => (
               <div key={moduleIndex} className="mb-4">
@@ -854,6 +862,32 @@ function CoursePlatformContent() {
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
                 <div className="flex-1 md:max-w-md">
+                  <div className="relative mb-4">
+                    <div className={`bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex justify-between items-center ${
+                      hasCompletedRequiredLessons(completedCourses) 
+                        ? 'hover:shadow-lg cursor-pointer' 
+                        : 'filter blur-[2px]'
+                    }`}>
+                      <div>
+                        <div className="font-bold text-lg">CUPOM: SBC500</div>
+                        <div className="text-sm opacity-90">Para R$500 de desconto</div>
+                      </div>
+                      <button
+                        onClick={() => window.location.href = 'https://mpago.la/2eUc8vr'}
+                        className="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-4"
+                      >
+                        Concluir compra
+                      </button>
+                    </div>
+                    
+                    {!hasCompletedRequiredLessons(completedCourses) && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black bg-opacity-75 text-white px-3 py-2 rounded-md text-sm text-center">
+                          Esse cupom será liberado ao concluir a aula 50, 51 e 52
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <UserStats />
                 </div>
                 <div className="flex-1 md:max-w-md">

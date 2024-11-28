@@ -79,17 +79,17 @@ export function UserStats() {
 
   return (
     <div className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-white">Your Stats</h2>
+      {/* <h2 className="text-2xl font-bold mb-4 text-white">Suas estatísticas</h2> */}
       <div className="mb-4 sm:mb-6">
-        <p className="text-base sm:text-lg text-white">🏃🏽‍♂️ Current Streak: <span className="font-bold text-indigo-400">{streak} days</span></p>
+        <p className="text-base sm:text-lg text-white">🏃🏽‍♂️ Sequência atual: <span className="font-bold text-indigo-400">{streak} dias</span></p>
         {lastCompletionDate && (
           <p className="text-sm text-gray-400 mt-2">
-            Last lesson completed: {lastCompletionDate.toLocaleDateString()} at {lastCompletionDate.toLocaleTimeString()}
+            Última aula concluída: {lastCompletionDate.toLocaleDateString()} at {lastCompletionDate.toLocaleTimeString()}
           </p>
         )}
       </div>
       <div className="w-full">
-  <h3 className="text-lg sm:text-xl font-semibold mb-2 text-white">Days with lessons completed</h3>
+  <h3 className="text-lg sm:text-xl font-semibold mb-2 text-white">Dias com aulas concluídas</h3>
     <div className="w-full">
           <Calendar
             mode="multiple"
