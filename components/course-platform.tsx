@@ -246,7 +246,7 @@ const modules = [
 ]
 
 const shorts = [
-  { title: 'Welcome', duration: '0:22', video2: 'https://player.vimeo.com/video/1022247390?autoplay=1&loop=1&muted=1&autopause=0', video: 'https://player.vimeo.com/video/1022247390?autoplay=1' },
+  { title: 'Custo de um bug', duration: '0:22', video2: 'https://player.vimeo.com/video/1034345010?autoplay=1&loop=1&muted=1&autopause=0', video: 'https://player.vimeo.com/video/1034345010?autoplay=1' }, 
 ]
 
 const articles = [
