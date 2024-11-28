@@ -194,6 +194,55 @@ const modules = [
       { title: 'Sem tarefas, por enquanto', completed: false },
     ]
   },
+  {
+    title: '🔒 | Módulo 06: AI, fora o hype',
+    courses: [
+      { title: 'Módulo em construção', image: '/m6.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+    ],
+    tasks: [
+      { title: 'Sem tarefas, por enquanto', completed: false },
+    ]
+  },
+
+  {
+    title: '🔒 | Módulo 07: Escalabilidade',
+    courses: [
+      { title: 'Módulo em construção', image: '/m7.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+    ],
+    tasks: [
+      { title: 'Sem tarefas, por enquanto', completed: false },
+    ]
+  },
+
+  {
+    title: '🔒 | Módulo 08: DevOps',
+    courses: [
+      { title: 'Módulo em construção', image: '/m8.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+    ],
+    tasks: [
+      { title: 'Sem tarefas, por enquanto', completed: false },
+    ]
+  },
+
+  {
+    title: '🔒 | Módulo 09: Segurança e Privacidade',
+    courses: [
+      { title: 'Módulo em construção', image: '/m9.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+    ],
+    tasks: [
+      { title: 'Sem tarefas, por enquanto', completed: false },
+    ]
+  },
+
+  {
+    title: '🔒 | Módulo 10: Blockchain, cripto e Web3',
+    courses: [
+      { title: 'Módulo em construção', image: '/m10.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+    ],
+    tasks: [
+      { title: 'Sem tarefas, por enquanto', completed: false },
+    ]
+  },
 ]
 
 const shorts = [
@@ -643,7 +692,7 @@ function CoursePlatformContent() {
   )
 
   const isModuleLocked = (moduleIndex: number) => {
-    return moduleIndex <= 3; // Locks modules 0, 1, 2, and 3
+    return moduleIndex <= 3 || (moduleIndex >= 5 && moduleIndex <= 10); // Locks modules 0-3 and 6-10
   }
 
   const hasCompletedRequiredLessons = (completedCourses: {[key: number]: number[]}) => {
