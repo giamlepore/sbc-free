@@ -18,6 +18,7 @@ model User {
   sessions      Session[]
   lastSessionAt DateTime?
   courseCompletions CourseCompletion[]
+  comments Comment[]
 }
 
 model CourseCompletion {
@@ -74,4 +75,17 @@ model Progress {
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, moduleId, courseId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  moduleId  Int
+  courseId  Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([moduleId, courseId])
 }

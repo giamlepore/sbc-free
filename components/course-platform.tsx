@@ -17,6 +17,7 @@ import { Leaderboard } from "@/components/leaderboard"
 import { UserStats } from "@/components/UserStats"
 import TechQuestions from "@/components/tech-questions"
 import { RecentCompletions } from "@/components/RecentCompletions"
+import { Comments } from "@/components/Comments"
 interface CustomSession extends Session {
   user: {
     id: string;
@@ -789,6 +790,7 @@ function CoursePlatformContent() {
                 </motion.div>
               )}
             </div>
+            <Comments moduleId={currentModule} courseId={currentCourse} />
             {renderCourseVideos()}
           </div>
         ) : showShortVideo ? (
