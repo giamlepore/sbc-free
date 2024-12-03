@@ -826,13 +826,19 @@ function CoursePlatformContent() {
               {/* <Input className="pl-8 w-full bg-gray-700 text-gray-200 border-gray-600" placeholder="Search" /> */}
             </div>
           </div>
+          <Button
+            onClick={() => openWebView('https://sbcschool.com.br/technical-product-manager')}
+            className="bg-white hover:bg-gray-700 text-gray-700 font-medium py-2 px-4 rounded-full border border-gray-600 transition-all duration-300 text-sm flex items-center gap-2 ml-4"
+          >
+            👀 Acessar site SBC 
+          </Button>
           {session ? (
-            <Avatar onClick={() => signOut()} className="cursor-pointer">
+            <Avatar onClick={() => signOut()} className="cursor-pointer ml-2">
               <AvatarImage src={session.user.image ?? undefined} alt={session.user.name ?? 'User'} />
               <AvatarFallback>{session.user.name?.[0] ?? 'U'}</AvatarFallback>
             </Avatar>
           ) : (
-            <Button onClick={() => signIn('google')} className="bg-indigo-600 hover:bg-indigo-700">Sign In</Button>
+            <Button onClick={() => signIn('google')} className="bg-indigo-600 hover:bg-indigo-700 ml-4">Sign In</Button>
           )}
         </div>
       </header>
