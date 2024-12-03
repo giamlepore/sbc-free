@@ -909,6 +909,35 @@ function CoursePlatformContent() {
                 </div>
               </div>
 
+              <div className="flex-1 md:max-w-md">
+                  <div className="relative mb-4">
+                    <div className={`bg-gradient-to-r from-gray-600 to-gray-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex justify-between items-center ${
+                      hasCompletedRequiredLessons(completedCourses) 
+                        ? 'hover:shadow-lg cursor-pointer' 
+                        : 'filter blur-[2px]'
+                    }`}>
+                      <div>
+                        <div className="font-bold text-lg">CUPOM: SBC500</div>
+                        <div className="text-sm opacity-90">Para R$500 de desconto</div>
+                      </div>
+                      <button
+                        onClick={() => window.location.href = 'https://mpago.la/2eUc8vr'}
+                        className="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-4"
+                      >
+                        Concluir compra
+                      </button>
+                    </div>
+                    
+                    {!hasCompletedRequiredLessons(completedCourses) && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black bg-opacity-80 text-white px-3 py-2 rounded-md text-sm text-center">
+                          Esse cupom será liberado ao concluir a aula 50, 51 e 52
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
               
             </div>
             {modules.map((moduleItem, moduleIndex) => (
