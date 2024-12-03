@@ -19,6 +19,7 @@ model User {
   lastSessionAt DateTime?
   courseCompletions CourseCompletion[]
   comments Comment[]
+  courseRatings CourseRating[]
 }
 
 model CourseCompletion {
@@ -88,4 +89,17 @@ model Comment {
   user      User     @relation(fields: [userId], references: [id])
 
   @@index([moduleId, courseId])
+}
+
+
+model CourseRating {
+  id        String   @id @default(cuid())
+  moduleId  Int
+  courseId  Int
+  rating    Int
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, moduleId, courseId])
 }

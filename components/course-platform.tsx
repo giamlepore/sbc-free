@@ -18,6 +18,7 @@ import { UserStats } from "@/components/UserStats"
 import TechQuestions from "@/components/tech-questions"
 import { RecentCompletions } from "@/components/RecentCompletions"
 import { Comments } from "@/components/Comments"
+import { RatingModal } from "@/components/RatingModal"
 interface CustomSession extends Session {
   user: {
     id: string;
@@ -290,6 +291,9 @@ function CoursePlatformContent() {
   const [showWebView, setShowWebView] = useState(false)
   const [webViewUrl, setWebViewUrl] = useState('')
   const [showTechQuestions, setShowTechQuestions] = useState(false)
+  const [showRatingModal, setShowRatingModal] = useState(false)
+  const [ratingModuleId, setRatingModuleId] = useState<number | null>(null)
+  const [ratingCourseId, setRatingCourseId] = useState<number | null>(null)
   
   
 
@@ -379,7 +383,9 @@ function CoursePlatformContent() {
   
     setTimeout(() => {
       setShowCheckAnimation(false)
-      moveToNextLesson()
+      setRatingModuleId(currentModule)
+      setRatingCourseId(currentCourse)
+      setShowRatingModal(true)
     }, 1000)
   }
 
@@ -701,6 +707,70 @@ function CoursePlatformContent() {
     const module5Completions = completedCourses[4] || [];
     return module5Completions.includes(0) && module5Completions.includes(1) && module5Completions.includes(2);
   };
+
+  const markAsCompleted = async (moduleId: number, courseId: number) => {
+    if (session?.user?.id) {
+      await fetch('/api/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: session.user.id,
+          moduleId,
+          courseId,
+        }),
+      });
+
+      setCompletedCourses(prev => {
+        const currentCompleted = new Set(prev[moduleId] || []);
+        currentCompleted.add(courseId);
+        return {
+          ...prev,
+          [moduleId]: Array.from(currentCompleted)
+        };
+      });
+    }
+  };
+
+  const handleNextCourse = () => {
+    const currentModuleCourses = modules[currentModule].courses;
+    if (currentCourse < currentModuleCourses.length - 1) {
+      setCurrentCourse(currentCourse + 1);
+    } else if (currentModule < modules.length - 1) {
+      setCurrentModule(currentModule + 1);
+      setCurrentCourse(0);
+    } else {
+      setShowVideo(false);
+      setActiveTab('My Progress ⏳');
+    }
+    findLastUncompletedCourse(completedCourses);
+  };
+
+  const handleRatingSubmit = async (rating: number) => {
+    if (ratingModuleId === null || ratingCourseId === null) return
+
+    try {
+      // Submit the rating
+      await fetch('/api/course-rating', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          moduleId: ratingModuleId,
+          courseId: ratingCourseId,
+          rating
+        })
+      })
+
+      // Mark as completed after rating is submitted
+      await markAsCompleted(ratingModuleId, ratingCourseId)
+      
+      // Navigate to next course
+      handleNextCourse()
+    } catch (error) {
+      console.error('Error submitting rating:', error)
+    }
+  }
 
   if (!mounted) {
     return null
@@ -1075,6 +1145,15 @@ function CoursePlatformContent() {
             </div>
           </div>
         </div>
+      )}
+      {showRatingModal && (
+        <RatingModal
+          isOpen={showRatingModal}
+          onClose={() => setShowRatingModal(false)}
+          onSubmit={handleRatingSubmit}
+          moduleId={ratingModuleId ?? 0}
+          courseId={ratingCourseId ?? 0}
+        />
       )}
     </div>
   )
