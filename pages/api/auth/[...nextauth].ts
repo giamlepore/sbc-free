@@ -1,4 +1,4 @@
-import NextAuth, { Session, User } from "next-auth"
+import NextAuth, { Session, User, Account, Profile } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "@/lib/prisma"
@@ -32,6 +32,35 @@ export const authOptions = {
         } as ExtendedSession;
       }
       return session as ExtendedSession;
+    },
+    signIn: async ({ 
+      user, 
+      account, 
+      profile 
+    }: { 
+      user: User; 
+      account: Account | null; 
+      profile?: Profile 
+    }) => {
+      try {
+        if (account?.provider === 'google') {
+          const params = new URLSearchParams(account.state as string);
+          const state = params.get('state');
+          if (state) {
+            const { referredBy } = JSON.parse(state);
+            
+            if (referredBy && user.id !== referredBy) {
+              await prisma.user.update({
+                where: { id: user.id },
+                data: { referredById: referredBy }
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error processing referral:', error);
+      }
+      return true;
     }
   },
 }

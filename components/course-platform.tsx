@@ -19,6 +19,8 @@ import TechQuestions from "@/components/tech-questions"
 import { RecentCompletions } from "@/components/RecentCompletions"
 import { Comments } from "@/components/Comments"
 import { RatingModal } from "@/components/RatingModal"
+import { ReferralBox } from "@/components/ReferralBox"
+import { ReferralProcessor } from "@/components/ReferralProcessor"
 interface CustomSession extends Session {
   user: {
     id: string;
@@ -263,6 +265,7 @@ const articles = [
 export function CoursePlatform() {
   return (
     <SessionProvider>
+      <ReferralProcessor />
       <CoursePlatformContent />
     </SessionProvider>
   )
@@ -772,6 +775,20 @@ function CoursePlatformContent() {
     }
   }
 
+  const handleGoogleSignIn = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refParam = urlParams.get('ref');
+    
+    // Salva a ref no localStorage antes do login
+    if (refParam) {
+      localStorage.setItem('referralCode', refParam);
+    }
+    
+    signIn('google', {
+      callbackUrl: '/'
+    });
+  }
+
   if (!mounted) {
     return null
   }
@@ -791,7 +808,7 @@ function CoursePlatformContent() {
               <p className="text-gray-400 mb-4">O curso mais completo do Brasil de Tech para PMs.</p>
             </div>
             <Button 
-              onClick={() => signIn('google')} 
+              onClick={handleGoogleSignIn} 
               className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded self-end transition-colors duration-300"
             >
               Acessar versão gratuita
@@ -838,7 +855,7 @@ function CoursePlatformContent() {
               <AvatarFallback>{session.user.name?.[0] ?? 'U'}</AvatarFallback>
             </Avatar>
           ) : (
-            <Button onClick={() => signIn('google')} className="bg-indigo-600 hover:bg-indigo-700 ml-4">Sign In</Button>
+            <Button onClick={handleGoogleSignIn} className="bg-indigo-600 hover:bg-indigo-700 ml-4">Sign In</Button>
           )}
         </div>
       </header>
@@ -1018,33 +1035,10 @@ function CoursePlatformContent() {
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
                 <div className="flex-1 md:max-w-md">
-                  <div className="relative mb-4">
-                    <div className={`bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex justify-between items-center ${
-                      hasCompletedRequiredLessons(completedCourses) 
-                        ? 'hover:shadow-lg cursor-pointer' 
-                        : 'filter blur-[2px]'
-                    }`}>
-                      <div>
-                        <div className="font-bold text-lg">CUPOM: SBC500</div>
-                        <div className="text-sm opacity-90">Para R$500 de desconto</div>
-                      </div>
-                      <button
-                        onClick={() => window.location.href = 'https://mpago.la/2eUc8vr'}
-                        className="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-4"
-                      >
-                        Concluir compra
-                      </button>
-                    </div>
-                    
-                    {!hasCompletedRequiredLessons(completedCourses) && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-black bg-opacity-75 text-white px-3 py-2 rounded-md text-sm text-center">
-                          Esse cupom será liberado ao concluir a aula 50, 51 e 52
-                        </div>
-                      </div>
-                    )}
+                  <ReferralBox />
+                  <div className="mt-6">
+                    <UserStats />
                   </div>
-                  <UserStats />
                 </div>
                 <div className="flex-1 md:max-w-md">
                   <Leaderboard currentUserId={session?.user?.id} />

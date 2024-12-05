@@ -20,6 +20,9 @@ model User {
   courseCompletions CourseCompletion[]
   comments Comment[]
   courseRatings CourseRating[]
+  referredById  String?
+  referrer      User?     @relation("UserReferrals", fields: [referredById], references: [id])
+  referrals     User[]    @relation("UserReferrals")
 }
 
 model CourseCompletion {
