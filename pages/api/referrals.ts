@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
       })
 
-      const hasAccess = referrals.length >= 3
+      const hasAccess = referrals.length >= 40
 
       const referralsWithDate = referrals.map(referral => ({
         ...referral,
