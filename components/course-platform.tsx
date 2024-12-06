@@ -799,22 +799,56 @@ function CoursePlatformContent() {
   
   if (!session) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-200">
-        <h1 className="text-4xl font-bold mb-8 text-center">Entre no seu curso da SBC:</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full px-4 mx-auto">
-          <div className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between transform hover:scale-105">
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Technical Product Manager Training (Tech for PMs)</h2>
-              <p className="text-gray-400 mb-4">O curso mais completo do Brasil de Tech para PMs.</p>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#111111] text-gray-200 px-4 relative">
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(75 85 99 / 0.2) 1px, transparent 0)`,
+            backgroundSize: '24px 24px'
+          }}
+        />
+        
+        <div className="max-w-4xl w-full space-y-12 text-center relative z-10">
+          <div className="flex justify-center">
+            <div className="bg-gray-800 p-1 rounded-xl">
+              <img 
+                src="/logo-sbc.png" 
+                alt="SBC Logo" 
+                className="h-12 w-auto"
+              />
+              
             </div>
+            <span className="inline-flex items-center px-4 py-2 rounded-full text-xs font-medium text-gray-200">
+            SBC SCHOOL (SKEPTICAL BUT CURIOUS)
+          </span>
+          </div>
+
+          
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tight text-gray-200 leading-tight">
+            Alavanque sua carreira<br />
+            <span className="text-gray-500">como Tech PM.</span>
+          </h1>
+          
+
+          <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            Se você dedicar tempo e for consistente, vamos te ajudar a se posicionar melhor em conversas técnicas e ter mais autonomia.
+          </p>
+          
+
+          <div className="flex justify-center">
             <Button 
-              onClick={handleGoogleSignIn} 
-              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded self-end transition-colors duration-300"
+              onClick={handleGoogleSignIn}
+              className="px-8 py-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg transition-all duration-300 text-lg"
             >
-              Acessar versão gratuita
+              Acessar plataforma
             </Button>
           </div>
-          <div className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between transform hover:scale-105">
+  
+        </div>
+      </div>
+    )
+  }
+          {/* <div className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between transform hover:scale-105">
             <div>
               <h2 className="text-2xl font-semibold mb-4">Como criar um produto do zero, sem sorte</h2>
               <p className="text-gray-400 mb-4">Projeto paralelo ou criando produtos do zero em empresas? Esse é o caminho.</p>
@@ -825,11 +859,8 @@ function CoursePlatformContent() {
             >
               Acessar curso
             </Button>
-          </div>
-        </div>
-      </div>
-    )
-  }
+          </div> */}
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
@@ -847,7 +878,7 @@ function CoursePlatformContent() {
             onClick={() => openWebView('https://sbcschool.com.br/technical-product-manager')}
             className="bg-white hover:bg-gray-700 text-gray-700 font-medium py-2 px-4 rounded-full border border-gray-600 transition-all duration-300 text-sm flex items-center gap-2 ml-4"
           >
-            👀 Acessar site SBC 
+            Acessar site SBC 
           </Button>
           {session ? (
             <Avatar onClick={() => signOut()} className="cursor-pointer ml-2">
@@ -1030,7 +1061,7 @@ function CoursePlatformContent() {
           <div className="max-w-6xl mx-auto">
             {renderAllShorts()}
           </div>
-        ) : activeTab === '🎮' ? (
+        ) : activeTab === 'Stats 🎮' ? (
           <div className="max-w-6xl mx-auto">
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
@@ -1140,7 +1171,7 @@ function CoursePlatformContent() {
             { icon: BookOpen, label: 'Shorts 🔥' },
             { icon: CheckSquare, label: 'Tasks ☑️' },
             { icon: BarChart2, label: 'Progress ⏳' },
-            { icon: Gamepad2, label: '🎮' },
+            { icon: Gamepad2, label: 'Stats 🎮' },
           ].map((item, index) => (
             <Button
               key={index}
