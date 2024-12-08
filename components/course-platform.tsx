@@ -21,12 +21,16 @@ import { Comments } from "@/components/Comments"
 import { RatingModal } from "@/components/RatingModal"
 import { ReferralBox } from "@/components/ReferralBox"
 import { ReferralProcessor } from "@/components/ReferralProcessor"
+import { AccessLevel, hasModuleAccess } from '@/types/access-levels';
+import { AdminModal } from './AdminModal'
+
 interface CustomSession extends Session {
   user: {
     id: string;
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    accessLevel: AccessLevel;
   }
 }
 
@@ -102,7 +106,7 @@ const modules = [
   
 
   {
-    title: '🔒 | Módulo 01: Como a Internet Funciona?',
+    title: 'Módulo 01: Como a Internet Funciona?',
     courses: [
       { title: 'Aula #01 - O que é esperado aqui nesse módulo? Qual a expectativa?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265685?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #02 - O que é a internet?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265764?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -119,7 +123,7 @@ const modules = [
     ]
   },
   {
-    title: '🔒 | Módulo 02: Construindo Software',
+    title: 'Módulo 02: Construindo Software',
     courses: [
       { title: 'Aula #08 - Introdução Módulo 2', image: '/m2.png', video: 'https://player.vimeo.com/video/1016266732?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #09 - O ciclo de desenvolvimento de software', image: '/m2.png', video: 'https://player.vimeo.com/video/1016266810?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -143,7 +147,7 @@ const modules = [
   },
   
   {
-    title: '🔒 | Módulo 03: Conceitos de básicos de programação para se tornar um "PM full-stack"',
+    title: 'Módulo 03: Conceitos de básicos de programação para se tornar um "PM full-stack"',
     courses: [
       { title: 'Aula #23 - Pontos importantes em Programação', image: '/m3.png', video: 'https://player.vimeo.com/video/1016270619?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #24 - Você realmente entende o que é "front-end"?', image: '/m3.png', video: 'https://player.vimeo.com/video/1016270903?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -170,7 +174,7 @@ const modules = [
     ]
   },
   {
-    title: '🔒 | Módulo 04: Bancos de Dados',
+    title: 'Módulo 04: Bancos de Dados',
     courses: [
       { title: 'Aula #042 - Bancos de Dados, o básico', image: '/m4.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #043 - Tipos de Bancos de Dados I', image: '/m4.png', video: 'https://player.vimeo.com/video/1016276967?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -184,7 +188,7 @@ const modules = [
     ]
   },
   {
-    title: '✅ | Módulo 05: APIs',
+    title: 'Módulo 05: APIs',
     courses: [
       { title: 'Aula #050 - Introdução a APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027817537?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
       { title: 'Aula #051 - Pra que serve uma API? E sua relação com Organizações', image: '/m5.png', video: 'https://player.vimeo.com/video/1027821623?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
@@ -199,7 +203,7 @@ const modules = [
     ]
   },
   {
-    title: '🔒 | Módulo 06: AI, fora o hype',
+    title: 'Módulo 06: AI, fora o hype',
     courses: [
       { title: 'Módulo em construção', image: '/m6.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -209,7 +213,7 @@ const modules = [
   },
 
   {
-    title: '🔒 | Módulo 07: Escalabilidade',
+    title: 'Módulo 07: Escalabilidade',
     courses: [
       { title: 'Módulo em construção', image: '/m7.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -219,7 +223,7 @@ const modules = [
   },
 
   {
-    title: '🔒 | Módulo 08: DevOps',
+    title: 'Módulo 08: DevOps',
     courses: [
       { title: 'Módulo em construção', image: '/m8.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -229,7 +233,7 @@ const modules = [
   },
 
   {
-    title: '🔒 | Módulo 09: Segurança e Privacidade',
+    title: 'Módulo 09: Segurança e Privacidade',
     courses: [
       { title: 'Módulo em construção', image: '/m9.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -239,7 +243,7 @@ const modules = [
   },
 
   {
-    title: '🔒 | Módulo 10: Blockchain, cripto e Web3',
+    title: 'Módulo 10: Blockchain, cripto e Web3',
     courses: [
       { title: 'Módulo em construção', image: '/m10.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -262,18 +266,20 @@ const articles = [
   // Add more articles as needed
 ]
 
-export function CoursePlatform() {
-  return (
-    <SessionProvider>
-      <ReferralProcessor />
-      <CoursePlatformContent />
-    </SessionProvider>
-  )
-}
+  export function CoursePlatform() {
+    return (
+      <SessionProvider>
+        <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
+          <CoursePlatformContent />
+        </div>
+      </SessionProvider>
+    );
+  }
 
 function CoursePlatformContent() {
   const { data: session } = useSession() as { data: CustomSession | null }
   const [currentModule, setCurrentModule] = useState(0)
+  console.log('User Access Level:', session?.user?.accessLevel); 
   const [currentCourse, setCurrentCourse] = useState(0)
   const [completedCourses, setCompletedCourses] = useState<{[key: number]: number[]}>({})
   const [activeTab, setActiveTab] = useState('Home 🏠')
@@ -297,6 +303,7 @@ function CoursePlatformContent() {
   const [showRatingModal, setShowRatingModal] = useState(false)
   const [ratingModuleId, setRatingModuleId] = useState<number | null>(null)
   const [ratingCourseId, setRatingCourseId] = useState<number | null>(null)
+  const [showAdminModal, setShowAdminModal] = useState(false)
   
   
 
@@ -702,8 +709,24 @@ function CoursePlatformContent() {
   )
 
   const isModuleLocked = (moduleIndex: number) => {
-    return moduleIndex <= 3 || (moduleIndex >= 5 && moduleIndex <= 10); // Locks modules 0-3 and 6-10
-  }
+    // Para ADMIN e STUDENT, nenhum módulo está bloqueado
+    if (session?.user?.accessLevel === 'ADMIN' || session?.user?.accessLevel === 'STUDENT') {
+      return false;
+    }
+
+    // Para LEAD, apenas módulo 5 está desbloqueado
+    if (session?.user?.accessLevel === 'LEAD') {
+      return moduleIndex !== 4; // retorna false apenas para módulo 5 (index 4)
+    }
+
+    // Para LEAD_PLUS, módulos 4 e 5 estão desbloqueados
+    if (session?.user?.accessLevel === 'LEAD_PLUS') {
+      return !(moduleIndex === 3 || moduleIndex === 4); // retorna false para módulos 4 e 5
+    }
+
+    // Para outros casos (ou não logado), todos os módulos estão bloqueados
+    return true;
+  };
 
   const hasCompletedRequiredLessons = (completedCourses: {[key: number]: number[]}) => {
     // Module 5 (index 4) lessons 50, 51, and 52 correspond to indices 0, 1, and 2
@@ -788,6 +811,32 @@ function CoursePlatformContent() {
       callbackUrl: '/'
     });
   }
+
+  const handleCourseClick = (moduleIndex: number, courseIndex: number) => {
+    // Para LEAD, apenas módulo 5 não abre webview
+    if (session?.user?.accessLevel === 'LEAD' && moduleIndex === 4) {
+      setCurrentCourse(courseIndex);
+      setShowVideo(true);
+      return;
+    }
+
+    // Para LEAD_PLUS, módulos 4 e 5 não abrem webview
+    if (session?.user?.accessLevel === 'LEAD_PLUS' && (moduleIndex === 3 || moduleIndex === 4)) {
+      setCurrentCourse(courseIndex);
+      setShowVideo(true);
+      return;
+    }
+
+    // Para ADMIN e STUDENT, nunca abre webview
+    if (session?.user?.accessLevel === 'ADMIN' || session?.user?.accessLevel === 'STUDENT') {
+      setCurrentCourse(courseIndex);
+      setShowVideo(true);
+      return;
+    }
+
+    // Para outros casos, abre webview
+    openWebView('https://mpago.li/1dbUF96');
+  };
 
   if (!mounted) {
     return null
@@ -887,6 +936,14 @@ function CoursePlatformContent() {
             </Avatar>
           ) : (
             <Button onClick={handleGoogleSignIn} className="bg-indigo-600 hover:bg-indigo-700 ml-4">Sign In</Button>
+          )}
+          {session?.user?.accessLevel === 'ADMIN' && (
+            <Button
+              onClick={() => setShowAdminModal(true)}
+              className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full transition-all duration-300 text-sm flex items-center gap-2 ml-4"
+            >
+              Admin
+            </Button>
           )}
         </div>
       </header>
@@ -997,12 +1054,21 @@ function CoursePlatformContent() {
                     setShowVideo(false)
                   }}
                 >
-                  <h2 className={`text-lg sm:text-xl md:text-2xl font-bold font-sans tracking-tight ${currentModule === moduleIndex ? 'text-white' : 'text-white text-opacity-80'} ${currentModule === moduleIndex ? '' : 'truncate'} max-w-[70%]`}>
+                  <div className="flex items-center gap-3 mr-3">
+                    {isModuleLocked(moduleIndex) ? (
+                      <Lock className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                    ) : (
+                      <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    )} </div>
+                    <h2 className={`text-lg sm:text-xl md:text-2xl font-bold font-sans tracking-tight ${currentModule === moduleIndex ? 'text-white' : 'text-white text-opacity-80'} ${currentModule === moduleIndex ? '' : 'truncate'} max-w-[70%]`}>
                     {moduleItem.title}
                   </h2>
+                  
                   <div className="flex-grow"></div>
                   <ChevronDown
-                    className={`h-8 w-8 text-white transition-transform duration-200 ml-4 ${currentModule === moduleIndex ? 'transform rotate-180' : ''}`}
+                    className={`h-8 w-8 text-white transition-transform duration-200 ml-4 ${
+                      currentModule === moduleIndex ? 'transform rotate-180' : ''
+                    }`}
                   />
                 </div>
                 {currentModule === moduleIndex && (
@@ -1020,14 +1086,7 @@ function CoursePlatformContent() {
                         <div
                           key={courseIndex}
                           className="bg-gray-800 rounded-lg overflow-hidden shadow-lg cursor-pointer transform hover:scale-105 transition-all duration-300"
-                          onClick={() => {
-                            if (isModuleLocked(moduleIndex)) {
-                              openWebView('https://mpago.li/1dbUF96')
-                            } else {
-                              setCurrentCourse(courseIndex)
-                              setShowVideo(true)
-                            }
-                          }}
+                          onClick={() => handleCourseClick(moduleIndex, courseIndex)}
                         >
                           <div className="relative aspect-video">
                             <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
@@ -1213,6 +1272,12 @@ function CoursePlatformContent() {
           onSubmit={handleRatingSubmit}
           moduleId={ratingModuleId ?? 0}
           courseId={ratingCourseId ?? 0}
+        />
+      )}
+      {showAdminModal && (
+        <AdminModal 
+          isOpen={showAdminModal} 
+          onClose={() => setShowAdminModal(false)} 
         />
       )}
     </div>

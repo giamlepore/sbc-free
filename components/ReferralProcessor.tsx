@@ -7,10 +7,11 @@ export function ReferralProcessor() {
   useEffect(() => {
     const processReferral = async () => {
       const referralCode = localStorage.getItem('referralCode');
+      console.log('Processing referral:', { referralCode, userId: session?.user?.id });
       
       if (session?.user?.id && referralCode && referralCode !== session.user.id) {
         try {
-          await fetch('/api/process-referral', {
+          const response = await fetch('/api/process-referral', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -21,14 +22,19 @@ export function ReferralProcessor() {
             })
           });
           
-          // Limpa o código após processamento
-          localStorage.removeItem('referralCode');
+          const data = await response.json();
+          console.log('Referral response:', data);
+
+          if (response.ok) {
+            localStorage.removeItem('referralCode');
+          }
         } catch (error) {
           console.error('Error processing referral:', error);
         }
       }
     };
 
+    // Adiciona um pequeno delay para garantir que o usuário foi criado
     if (session?.user?.id) {
       processReferral();
     }
