@@ -34,9 +34,13 @@ export function ReferralProcessor() {
       }
     };
 
-    // Adiciona um pequeno delay para garantir que o usuário foi criado
+    console.log('ReferralProcessor - Session:', session);
+    console.log('ReferralProcessor - ReferralCode:', localStorage.getItem('referralCode'));
+
     if (session?.user?.id) {
-      processReferral();
+      setTimeout(() => {
+        processReferral();
+      }, 7000);
     }
   }, [session]);
 

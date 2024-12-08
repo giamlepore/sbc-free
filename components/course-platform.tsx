@@ -270,6 +270,7 @@ const articles = [
     return (
       <SessionProvider>
         <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
+          <ReferralProcessor />
           <CoursePlatformContent />
         </div>
       </SessionProvider>
@@ -913,6 +914,7 @@ function CoursePlatformContent() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
+      <ReferralProcessor />
       {/* Header */}
       <header className="sticky top-0 z-10 bg-gray-800 border-b border-gray-700">
         <div className="flex items-center justify-between px-4 py-2">

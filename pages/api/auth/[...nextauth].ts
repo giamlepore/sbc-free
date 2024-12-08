@@ -68,49 +68,116 @@ export const authOptions = {
       profile?: Profile 
     }) => {
       try {
-        if (!user.email) {
-          console.error('User email is required');
+        if (!user.email || !account) {
+          console.error('User email and account are required');
           return false;
         }
 
+        console.log('SignIn attempt:', { user, account });
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email }
         });
 
+        // Caso 1: Novo usuário ou usuário excluído
         if (!existingUser) {
-          await prisma.user.create({
-            data: {
-              id: user.id,
-              email: user.email,
-              name: user.name || '',
-              accessLevel: AccessLevel.LEAD
-            }
+          // Criamos o usuário e a conta em uma única transação
+          await prisma.$transaction(async (tx) => {
+            await tx.user.create({
+              data: {
+                id: user.id,
+                email: user.email,
+                name: user.name || '',
+                accessLevel: AccessLevel.LEAD,
+                accounts: {
+                  create: {
+                    type: account.type,
+                    provider: account.provider,
+                    providerAccountId: account.providerAccountId,
+                    access_token: account.access_token,
+                    expires_at: account.expires_at,
+                    token_type: account.token_type,
+                    scope: account.scope,
+                    id_token: account.id_token,
+                    session_state: account.session_state
+                  }
+                }
+              }
+            });
           });
-        } else if (existingUser.id !== user.id) {
-          await prisma.user.update({
-            where: { id: existingUser.id },
-            data: { id: user.id }
-          });
-        }
-
-        if (account?.provider === 'google') {
-          const params = new URLSearchParams(account.state as string);
-          const state = params.get('state');
-          if (state) {
-            const { referredBy } = JSON.parse(state);
+        } 
+        // Caso 2: Usuário existe (mesmo ID ou ID diferente)
+        else {
+          // Verifica se precisa atualizar o ID
+          if (existingUser.id !== user.id) {
+            console.log('Updating user ID:', {
+              oldId: existingUser.id,
+              newId: user.id
+            });
             
-            if (referredBy && user.id !== referredBy) {
-              await prisma.user.update({
-                where: { id: user.id },
-                data: { referredById: referredBy }
+            await prisma.user.update({
+              where: { id: existingUser.id },
+              data: { id: user.id }
+            });
+          }
+
+          // Sempre verifica e atualiza a conta Google
+          if (account) {
+            const existingAccount = await prisma.account.findFirst({
+              where: {
+                provider: account.provider,
+                providerAccountId: account.providerAccountId
+              }
+            });
+
+            if (existingAccount) {
+              // Atualiza a conta existente
+              await prisma.account.update({
+                where: { id: existingAccount.id },
+                data: { 
+                  userId: user.id,
+                  access_token: account.access_token,
+                  expires_at: account.expires_at,
+                  id_token: account.id_token,
+                  scope: account.scope,
+                  token_type: account.token_type
+                }
+              });
+            } else {
+              // Cria uma nova conta
+              await prisma.account.create({
+                data: {
+                  userId: user.id,
+                  type: account.type,
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                  access_token: account.access_token,
+                  expires_at: account.expires_at,
+                  token_type: account.token_type,
+                  scope: account.scope,
+                  id_token: account.id_token,
+                  session_state: account.session_state
+                }
               });
             }
+          }
+        }
+
+        // Processa referral se existir
+        if (account?.provider === 'google') {
+          const referralCode = account.state ? 
+            new URLSearchParams(account.state as string).get('referralCode') : null;
+          
+          if (referralCode && user.id !== referralCode) {
+            await prisma.user.update({
+              where: { id: user.id },
+              data: { referredById: referralCode }
+            });
           }
         }
         return true;
       } catch (error) {
         console.error('Error in signIn callback:', error);
-        return true;
+        return false;
       }
     }
   }
