@@ -262,6 +262,11 @@ const articles = [
   { title: '50 conceitos técnicos', image: '/50-conceitos.png', slug: '50-conceitos' },
   { title: 'ChatGPT Evolução', image: '/chatgptparar.png', slug: 'chatgpt-evolucao' },
   { title: 'Frameworks, o que são?', image: '/frameworks.png', slug: 'frameworks' },
+  { title: 'DevTools, por que tão importante?', image: '/DevTools.png', slug: 'dev-tools-07' },
+  { title: '5 conceitos básicos importantes', image: '/Básico.png', slug: 'conceitos-tech-01' },
+  { title: 'A diferença entre Github e Git', image: '/GIT.png', slug: 'github-ou-git' },
+  { title: 'PWA ou SPA?', image: '/PWA.png', slug: 'pwa-ou-spa' },
+  { title: 'Bancos de Dados', image: '/banco.png', slug: 'banco-de-dados' },
   // { title: 'The Future of AI in VC', image: '/article2.jpg', slug: 'future-of-ai-in-vc' },
   // Add more articles as needed
 ]
