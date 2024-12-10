@@ -16,7 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
         select: {
           name: true,
-          email: true
+          email: true,
+          accessLevel: true
         }
       })
 

@@ -13,6 +13,7 @@ interface Referral {
   name: string
   email: string
   createdAt: Date
+  accessLevel: 'LEAD' | 'LEAD_PLUS' | 'STUDENT' | 'ADMIN'
 }
 
 export function ReferralBox() {
@@ -112,9 +113,18 @@ export function ReferralBox() {
                 {referrals.map((referral, index) => (
                   <div 
                     key={index}
-                    className="bg-gray-700 p-2 rounded text-gray-300 text-sm"
+                    className="bg-gray-700 p-2 rounded text-gray-300 text-sm flex items-center justify-between"
                   >
-                    {referral.name}
+                    <span>{referral.name}</span>
+                    <span className={`
+                      px-2 py-0.5 rounded text-xs font-medium
+                      ${referral.accessLevel === 'LEAD' ? 'bg-blue-500/20 text-blue-400' : ''}
+                      ${referral.accessLevel === 'LEAD_PLUS' ? 'bg-purple-500/20 text-purple-400' : ''}
+                      ${referral.accessLevel === 'STUDENT' ? 'bg-green-500/20 text-green-400' : ''}
+                      ${referral.accessLevel === 'ADMIN' ? 'bg-red-500/20 text-red-400' : ''}
+                    `}>
+                      {referral.accessLevel}
+                    </span>
                   </div>
                 ))}
                 {referrals.length === 0 && (
