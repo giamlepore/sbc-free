@@ -23,6 +23,7 @@ import { ReferralBox } from "@/components/ReferralBox"
 import { ReferralProcessor } from "@/components/ReferralProcessor"
 import { AccessLevel, hasModuleAccess } from '@/types/access-levels';
 import { AdminModal } from './AdminModal'
+import { PMPersonalityTest } from './PMPersonalityTest'
 
 interface CustomSession extends Session {
   user: {
@@ -310,6 +311,7 @@ function CoursePlatformContent() {
   const [ratingModuleId, setRatingModuleId] = useState<number | null>(null)
   const [ratingCourseId, setRatingCourseId] = useState<number | null>(null)
   const [showAdminModal, setShowAdminModal] = useState(false)
+  const [showPMTest, setShowPMTest] = useState(false)
   
   
 
@@ -1022,7 +1024,7 @@ function CoursePlatformContent() {
               </div>
 
               <div className="flex-1 md:max-w-md">
-                  <div className="relative mb-4">
+                  <div className="relative mb-2">
                     <div className={`bg-gradient-to-r from-gray-600 to-gray-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex justify-between items-center ${
                       hasCompletedRequiredLessons(completedCourses) 
                         ? 'hover:shadow-lg cursor-pointer' 
@@ -1047,6 +1049,22 @@ function CoursePlatformContent() {
                         </div>
                       </div>
                     )}
+                  </div>
+
+                  {/* New personality test component */}
+                  <div className="relative mb-4">
+                    <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg cursor-pointer transition-all duration-300 flex justify-between items-center">
+                      <div>
+                        <div className="font-bold text-lg">Teste de Personalidade</div>
+                        <div className="text-sm opacity-90">Descubra seu perfil como PM</div>
+                      </div>
+                      <button
+                        onClick={() => setShowPMTest(true)}
+                        className="bg-white text-purple-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-4"
+                      >
+                        Fazer teste
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -1131,6 +1149,7 @@ function CoursePlatformContent() {
           <div className="max-w-6xl mx-auto">
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
+                
                 <div className="flex-1 md:max-w-md">
                   <ReferralBox />
                   <div className="mt-6">
@@ -1286,6 +1305,22 @@ function CoursePlatformContent() {
           isOpen={showAdminModal} 
           onClose={() => setShowAdminModal(false)} 
         />
+      )}
+      {showPMTest && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-80">
+          <div className="relative w-full max-w-4xl">
+            {/* Botão de fechar flutuante */}
+            <button 
+              onClick={() => setShowPMTest(false)} 
+              className="absolute -top-10 right-0 z-50 p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            >
+              <X className="h-6 w-6 text-gray-200" />
+            </button>
+            
+            {/* Componente */}
+            <PMPersonalityTest />
+          </div>
+        </div>
       )}
     </div>
   )
