@@ -1,26 +1,12 @@
-# Tech for PMs #009 - Bancos de Dados
+### **Bancos de Dados**
 
----
-
-## O que você já viu por aqui
-- ✅ Clientes, servidores, TCP/IP, DNS, HTTP, Component Files e Assets.
-- ✅ A diferença entre Git e GitHub.
-- ✅ O que permite a existência da internet?
-- ✅ O que pode parar o ChatGPT? E a evolução das LLMs.
-- ✅ O que se espera de um PM?
-- ✅ O que é um SDK?
-- ✅ Aprendendo a usar o DevTools. Analisando erros, sugerindo mudanças e simulando uma internet mais lenta.
-- ✅ PWA ou SPA?
-
----
-
-## Tema de hoje: Bancos de Dados, SQL, Relacional ou não?
+> Tema de hoje: Bancos de Dados, SQL, Relacional ou não?
 
 A gente vive rodeado de dados, né? Seja no trabalho, em apps ou no dia a dia, os dados estão por toda parte.
 
 Mas, quando não organizados, eles podem virar um verdadeiro caos. Imagina tentar encontrar uma informação no meio de um monte de anotações espalhadas por aí? É exatamente isso que acontece com **dados não estruturados**.
 
-### Dados Estruturados vs. Não Estruturados
+### **Dados Estruturados vs. Não Estruturados**
 - **Dados não estruturados** são como mensagens de e-mail, notas soltas ou até mesmo fotos e vídeos. Sem uma organização definida, é difícil encontrar o que você precisa.
 - **Dados estruturados** são organizados de forma clara e prática, como em uma planilha com linhas e colunas.
 
@@ -28,7 +14,8 @@ Quando o volume cresce, a confusão também cresce. Com os dados estruturados, f
 
 ---
 
-## De Planilhas a Bancos de Dados Relacionais
+### **De Planilhas a Bancos de Dados Relacionais**
+
 Vamos imaginar que você está coletando avaliações de usuários.
 
 Você começa criando uma planilha, colocando nome e e-mail de cada usuário.
@@ -43,7 +30,8 @@ Por exemplo, você pode ter uma tabela de **usuários** e outra de **avaliaçõe
 
 ---
 
-## Sistemas de Gerenciamento de Bancos de Dados Relacionais (RDBMS)
+### **Sistemas de Gerenciamento de Bancos de Dados Relacionais (RDBMS)**
+
 Agora, para gerenciar esses bancos de dados, entra o **RDBMS** (Sistema de Gerenciamento de Banco de Dados Relacional).
 
 Eles são ferramentas que ajudam a criar, organizar e acessar esses dados de forma organizada e eficiente.
@@ -58,7 +46,8 @@ Cada um tem suas vantagens, mas o que todos têm em comum é que utilizam a ling
 
 ---
 
-## SQL: A Linguagem para Manipular Dados
+### **SQL: A Linguagem para Manipular Dados**
+
 O SQL (Structured Query Language) é a linguagem que permite que você se comunique com esses bancos de dados.
 
 E olha, acredite, não é nenhuma ciência de foguete.
@@ -75,7 +64,7 @@ Ah, e não precisa se preocupar com a pronúncia do SQL.
 
 Você pode falar "Sequel" ou "Ess-Queue-Ell"; o importante é que você entenda o poder por trás dessa ferramenta.
 
-### Por que isso importa?
+### **Por que isso importa?**
 SQL é tão presente que você já deve estar usando, mesmo sem perceber!
 
 Seja no seu navegador, nos apps que você usa diariamente ou nos sistemas de pagamento, por trás de tudo isso tem um banco de dados relacional rodando SQL.
@@ -86,7 +75,7 @@ E mesmo para quem não sabe programar, o SQL é algo que recomendo aprender, mes
 
 ---
 
-## O que disso tem no curso de Technical Product Manager?
+### **O que disso tem no curso de Technical Product Manager?**
 Nosso curso vai te ensinar a atuar em um banco de dados na prática, utilizando um dos RDBMS mais usados e com uma enorme comunidade de suporte.
 
 Vamos explorar como:

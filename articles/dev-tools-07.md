@@ -1,18 +1,6 @@
-# Tech for PMs #007 - A ferramenta que os devs mais usam (DevTools)
+## A ferramenta que os devs mais usam (DevTools)
 
----
-
-## Vamos para a aula de hoje?
-
-### O que você já viu por aqui:
-- ✅ Clientes, servidores, TCP/IP, DNS, HTTP, Component Files e Assets.
-- ✅ A diferença entre Git e GitHub.
-- ✅ O que permite a existência da internet?
-- ✅ O que pode parar o ChatGPT? E a evolução das LLMs.
-- ✅ O que se espera de um PM?
-- ✅ O que é um SDK?
-
-⏳ **Hoje**: Aprendendo a usar o DevTools. Analisando erros, sugerindo mudanças e simulando uma internet mais lenta.
+> Aprendendo a usar o DevTools. Analisando erros, sugerindo mudanças e simulando uma internet mais lenta.
 
 **Você clicou com o botão direito** do mouse (especialmente no Chrome e no Firefox) em qualquer site, e isso apareceu:
 
@@ -26,7 +14,7 @@ Parabéns, você acabou de acessar o **DevTools** do Google. Em um primeiro mome
 
 ---
 
-## O que é o DevTools?
+### **O que é o DevTools?**
 
 Segundo o próprio Google:
 - O Chrome DevTools é um **conjunto de ferramentas** para desenvolvedores da Web integrado diretamente ao navegador Google Chrome.
@@ -36,24 +24,28 @@ Segundo o próprio Google:
 
 ---
 
-## Para que serve o DevTools?
+### **Para que serve o DevTools?**
 
-### Simular o comportamento do site em outras plataformas
+### **Simular o comportamento do site em outras plataformas**
+
 A primeira coisa que você já consegue usar no dia a dia: ao abrir o DevTools, você consegue entender como o site se comporta em outras plataformas, como por exemplo no celular.
 
 ![Imagem](https://mcusercontent.com/a60fed1c9ecd9b3833bcc9130/images/7c37fa8f-91ce-abbf-3d47-7bdf0ff937cf.png)
 
 ---
 
-### Inspecionar elementos
+### **Inspecionar elementos**
+
 Você também consegue, ao selecionar a seta mais à esquerda, entender como todos os elementos da página se comportam, em qual parte do código se encontra, e outras informações como tamanho, cor, tipo de fonte, entre outros.
 
 ![Imagem](https://mcusercontent.com/a60fed1c9ecd9b3833bcc9130/images/d9327f4c-4eaf-b11b-6722-c35ab5ca6844.jpeg)
 
 ---
 
-### Editar o HTML e CSS
+### **Editar o HTML e CSS**
+
 Se você quiser também mexer no HTML e CSS da página, você consegue. Por exemplo, vou mudar a cor da página da SBC de preto para bege. 
+
 - **Cliquei com botão direito** em inspecionar.
 - Fui na aba **“Styles”**.
 - Acrescentei a linha de código:
@@ -70,7 +62,7 @@ Veja a pequena mudança que fiz no código. Apenas selecionei o elemento com o q
 
 ---
 
-## Identificar erros no Console
+### **Identificar erros no Console**
 
 Agora vem outra parte interessante, o **“Console”**. Esse é o lugar que você clica para identificar erros e arrumá-los. 
 1. Clique em **“Inspecionar”**.
@@ -83,7 +75,7 @@ Aqui você consegue achar o nome do arquivo e a linha do código em que o erro a
 
 ---
 
-## Painel de Network
+### **Painel de Network**
 
 Agora olha que massa o painel de **“Network”**.
 
@@ -95,7 +87,7 @@ Nesse painel, além de identificar erros de carregamento de imagens, você tamb�
 
 ---
 
-## Conclusão
+### **Conclusão**
 
 O DevTools oferece **múltiplas aplicações no dia a dia**. O prof. Allan, na aula que disponibilizamos, mostra em detalhes alguns pontos bem interessantes na aba **“Network”**.
 

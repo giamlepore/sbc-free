@@ -1,18 +1,8 @@
-# Tech for PMs #002 - A diferença entre Github e Git
+## A diferença entre Github e Git
 
-**Desenvolvedores falam bastante de Github, mas sabia que Git e Github são coisas bem diferentes?**
+> Desenvolvedores falam bastante de Github, mas sabia que Git e Github são coisas bem diferentes?
 
----
-
-## 📚 Vamos para a aula?
-
-### O que você já viu por aqui:
-- ✅ Clientes, servidores, TCP/IP, DNS, HTTP, Component Files e Assets.
-- ⌛️ Hoje: **Afinal, qual a diferença entre Git e Github?**
-
----
-
-## 🔍 O que é o GitHub?
+### **O que é o GitHub?**
 
 **GitHub** é uma plataforma baseada em nuvem onde você guarda, compartilha e trabalha junto com outras pessoas para escrever código.
 
@@ -26,7 +16,7 @@ O trabalho colaborativo no GitHub é possível justamente por conta de uma plata
 
 ---
 
-## 🛠️ Então o que é o Git?
+### **Então o que é o Git?**
 
 **Git** é um **Version Control System (VCS)**, ou seja, um sistema de controle de versão que rastreia inteligentemente mudanças em arquivos.
 
@@ -42,7 +32,7 @@ O Git é especialmente útil quando você e outras pessoas estão fazendo mudan�
 
 ---
 
-## 🤔 Ainda não entendi a diferença, Giam…
+### **Ainda não entendi a diferença, Giam…**
 
 Quando você sobe arquivos no GitHub, você está armazenando-os em um repositório **Git**.
 
@@ -56,7 +46,7 @@ O **Git** descobre como, de forma inteligente, mesclar esse fluxo de mudanças. 
 
 ---
 
-## 📢 Resumo Final
+### **Resumo Final**
 
 **Git é um sistema de controle de versão (VCS) e GitHub é uma empresa.**
 

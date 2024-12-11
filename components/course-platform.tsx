@@ -118,7 +118,7 @@ const modules = [
     ],
     tasks: [
       { title: 'Em breve', completed: false },
-      { title: 'Avalie o módulo 2 clicando aqui', link: 'https://tally.so/r/nPB8QV', completed: false },
+      { title: 'Leia o artigo "DevTools" na seção Articles na Home', link: '', completed: false },
       { title: 'Leia o artigo "Backend" na seção Articles na Home', completed: false },
     ]
   },

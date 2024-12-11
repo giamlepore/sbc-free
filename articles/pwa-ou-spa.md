@@ -1,23 +1,8 @@
-# Tech for PMs #008 - PWA ou SPA?
+## PWA ou SPA?
 
----
-
-## O que você já viu por aqui:
-- ✅ Clientes, servidores, TCP/IP, DNS, HTTP, Component Files e Assets.
-- ✅ A diferença entre Git e GitHub.
-- ✅ O que permite a existência da internet?
-- ✅ O que pode parar o ChatGPT? E a evolução das LLMs.
-- ✅ O que se espera de um PM?
-- ✅ O que é um SDK?
-- ✅ Aprendendo a usar o DevTools. Analisando erros, sugerindo mudanças e simulando uma internet mais lenta.
-- ⌛️ **Hoje**: PWA ou SPA?
-
----
-
-## Aula de Hoje
 Vamos lá?
 
-Existem frameworks de JavaScript como React, Angular e Vue que permitiram uma modernização em como websites e webapps são criados.
+> Existem frameworks de JavaScript como React, Angular e Vue que permitiram uma modernização em como websites e webapps são criados.
 
 Single Page Applications (SPAs) e Progressive Web Applications (PWAs) são discussões ainda bastante presentes no dia a dia.
 
@@ -37,7 +22,7 @@ A primeira coisa é que não existe um melhor ou pior para todos os casos.
 
 ---
 
-## PWA (Progressive Web Application)
+### **PWA (Progressive Web Application)**
 Um progressive web app (PWA) é um tipo de web app que tem como objetivo entregar uma experiência semelhante aos apps nativos para os usuários. Surgiu em 2015 pelo Google.
 
 PWAs são feitos para funcionar em qualquer aparelho: smartphones, tablets, desktops e podem ser acessados em qualquer browser (Chrome, Firefox, Safari, etc.).
@@ -59,7 +44,7 @@ Vale analisar bem o seu público-alvo (ex: relação deles com os apps, quando b
 
 ---
 
-## SPA (Single Page Application)
+### **SPA (Single Page Application)**
 Single-page applications (SPA) de forma simplificada: o conteúdo da página carrega conforme o usuário "scrolla" (arrasta a página para baixo).
 
 Algo parecido com o feed do Instagram, que só aparece quando você vai até o final da página.
@@ -74,7 +59,7 @@ Quando comparado com aplicações web tradicionais, segundo uma página especial
 
 ---
 
-## Comparação PWA x SPA
+### **Comparação PWA x SPA**
 Agora que você sabe um pouco mais de PWA e SPA, vamos ver qual é melhor para cada situação.
 
 **Resumindo de forma objetiva, sem considerar o contexto:**
