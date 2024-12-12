@@ -1060,7 +1060,7 @@ function CoursePlatformContent() {
                       </div>
                       <button
                         onClick={() => setShowPMTest(true)}
-                        className="bg-white text-purple-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-4"
+                        className="bg-white text-purple-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-2"
                       >
                         Fazer teste
                       </button>
