@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Search, Home, BookOpen, CheckSquare, BarChart2, ChevronRight, ChevronLeft, ChevronDown, Play, Check, X, Gamepad2, Lock } from 'lucide-react'
+import { Search, Home, BookOpen, CheckSquare, BarChart2, ChevronRight, ChevronLeft, ChevronDown, Play, Check, X, Gamepad2, Lock, HomeIcon, Sparkles, ListTodo, LineChart, Trophy } from 'lucide-react'
 import { useTheme } from "next-themes"
 import { motion } from "framer-motion"
 import { useSession, signIn, signOut } from "next-auth/react"
@@ -289,7 +289,7 @@ function CoursePlatformContent() {
   console.log('User Access Level:', session?.user?.accessLevel); 
   const [currentCourse, setCurrentCourse] = useState(0)
   const [completedCourses, setCompletedCourses] = useState<{[key: number]: number[]}>({})
-  const [activeTab, setActiveTab] = useState('Home 🏠')
+  const [activeTab, setActiveTab] = useState('home')
   const [showVideo, setShowVideo] = useState(false)
   const [currentShort, setCurrentShort] = useState(0)
   const [isSwiping, setIsSwiping] = useState(false)
@@ -1011,7 +1011,7 @@ function CoursePlatformContent() {
               </div>
             </div>
           </div>
-        ) : activeTab === 'Home 🏠' ? (
+        ) : activeTab === 'home' ? (
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
               <div className="md:col-span-1">
@@ -1141,11 +1141,11 @@ function CoursePlatformContent() {
             {renderShorts()}
             {renderArticles()}
           </div>
-        ) : activeTab === 'Shorts 🔥' ? (
+        ) : activeTab === 'shorts' ? (
           <div className="max-w-6xl mx-auto">
             {renderAllShorts()}
           </div>
-        ) : activeTab === 'Stats 🎮' ? (
+        ) : activeTab === 'stats' ? (
           <div className="max-w-6xl mx-auto">
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:space-x-6 space-y-6 md:space-y-0">
@@ -1162,7 +1162,7 @@ function CoursePlatformContent() {
               </div>
             </div>
           </div>
-        ) : activeTab === 'Tasks ☑️' ? (
+        ) : activeTab === 'tasks' ? (
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
               <h2 className="text-2xl font-bold mb-4 text-indigo-400 font-sans tracking-tight sm:text-xl">Tasks</h2>
@@ -1203,7 +1203,7 @@ function CoursePlatformContent() {
               ))}
             </div>
           </div>
-        ) : activeTab === 'Progress ⏳' ? (
+        ) : activeTab === 'progress' ? (
           <div className="max-w-4xl mx-auto">
             <div className="space-y-6">
               <h2 className="text-2xl font-bold mb-4 text-white font-sans tracking-tight sm:text-xl">My Progress</h2>
@@ -1252,24 +1252,35 @@ function CoursePlatformContent() {
       <nav className="sticky bottom-0 bg-gray-800 border-t border-gray-700">
         <div className="flex justify-around py-2">
           {[
-            { icon: Home, label: 'Home 🏠' },
-            { icon: BookOpen, label: 'Shorts 🔥' },
-            { icon: CheckSquare, label: 'Tasks ☑️' },
-            { icon: BarChart2, label: 'Progress ⏳' },
-            { icon: Gamepad2, label: 'Stats 🎮' },
+            { icon: HomeIcon, label: 'home', color: '#60A5FA' }, // Azul claro
+            { icon: Sparkles, label: 'shorts', color: '#F59E0B' }, // Âmbar
+            { icon: ListTodo, label: 'tasks', color: '#34D399' }, // Verde esmeralda
+            { icon: LineChart, label: 'progress', color: '#8B5CF6' }, // Violeta
+            { icon: Trophy, label: 'stats', color: '#FFD700' }, // Dourado
           ].map((item, index) => (
             <Button
               key={index}
               variant="ghost"
-              className="flex flex-col items-center text-gray-400 hover:text-indigo-400"
+              className={`relative flex flex-col items-center hover:bg-transparent`}
               onClick={() => {
                 setActiveTab(item.label)
                 setShowVideo(false)
                 setShowShortVideo(false)
               }}
             >
-              <item.icon className="h-6 w-6" />
-              <span className="text-xs mt-1">{item.label}</span>
+              <item.icon 
+                className="h-6 w-6 transition-colors duration-200" 
+                style={{ 
+                  color: activeTab === item.label ? item.color : '#9CA3AF',
+                  stroke: activeTab === item.label ? item.color : '#9CA3AF'
+                }}
+              />
+              {activeTab === item.label && (
+                <div 
+                  className="absolute -bottom-2 w-full h-0.5 rounded-t-full transition-all duration-200"
+                  style={{ backgroundColor: item.color }}
+                />
+              )}
             </Button>
           ))}
         </div>
