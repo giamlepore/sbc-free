@@ -18,6 +18,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           name: true,
           email: true,
           accessLevel: true,
+          lastSessionAt: true,
+          courseCompletions: true,
         },
       });
       return res.status(200).json(users);
