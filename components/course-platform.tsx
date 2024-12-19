@@ -183,6 +183,11 @@ const modules = [
       { title: 'Aula #045 - Modelagem de Dados I', image: '/m4.png', video: 'https://player.vimeo.com/video/1016277311?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #046 - Modelagem de Dados II', image: '/m4.png', video: 'https://player.vimeo.com/video/1016277459?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #047 - Modelagem de Dados III', image: '/m4.png', video: 'https://player.vimeo.com/video/1016277556?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #048 - Introdução SQL', image: '/m4.png', video: 'https://player.vimeo.com/video/1040847065?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #049 - SQL (Na prática)', image: '/m4.png', video: 'https://player.vimeo.com/video/1040847210?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #050 - SQL (Na prática) II', image: '/m4.png', video: 'https://player.vimeo.com/video/1040847426?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #051 - Stateful Application', image: '/m4.png', video: 'https://player.vimeo.com/video/1040847585?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #052 - Stateful Application II', image: '/m4.png', video: 'https://player.vimeo.com/video/1040847803?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
     tasks: [
       { title: 'Sem tarefas, por enquanto', completed: false },
@@ -191,13 +196,13 @@ const modules = [
   {
     title: 'Módulo 05: APIs',
     courses: [
-      { title: 'Aula #050 - Introdução a APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027817537?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #051 - Pra que serve uma API? E sua relação com Organizações', image: '/m5.png', video: 'https://player.vimeo.com/video/1027821623?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #052 - Funcionamentos das APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027823880?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #053 - Refatorando um Monolito', image: '/m5.png', video: 'https://player.vimeo.com/video/1027824176?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #054 - Aprofundando um pouco mais', image: '/m5.png', video: 'https://player.vimeo.com/video/1027839704?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #055 - Tipos de APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1029441260?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
-      { title: 'Aula #056 - Tecnologias e Ferramentas relevantes', image: '/m5.png', video: 'https://player.vimeo.com/video/1029705931?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #053 - Introdução a APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027817537?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #054 - Pra que serve uma API? E sua relação com Organizações', image: '/m5.png', video: 'https://player.vimeo.com/video/1027821623?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #055 - Funcionamentos das APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027823880?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #056 - Refatorando um Monolito', image: '/m5.png', video: 'https://player.vimeo.com/video/1027824176?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #057 - Aprofundando um pouco mais', image: '/m5.png', video: 'https://player.vimeo.com/video/1027839704?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #058 - Tipos de APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1029441260?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
+      { title: 'Aula #059 - Tecnologias e Ferramentas relevantes', image: '/m5.png', video: 'https://player.vimeo.com/video/1029705931?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
     ],
     tasks: [
       { title: 'Sem tarefas, por enquanto', completed: false },
@@ -1085,16 +1090,31 @@ function CoursePlatformContent() {
                     ) : (
                       <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
                     )} </div>
-                    <h2 className={`text-lg sm:text-xl md:text-2xl font-bold font-sans tracking-tight ${currentModule === moduleIndex ? 'text-white' : 'text-white text-opacity-80'} ${currentModule === moduleIndex ? '' : 'truncate'} max-w-[70%]`}>
-                    {moduleItem.title}
-                  </h2>
+                    <h2 className={`text-lg sm:text-xl md:text-2xl font-bold font-sans tracking-tight ${currentModule === moduleIndex ? 'text-white' : 'text-white text-opacity-80'} max-w-[70%]`}>
+                      <div className={`${currentModule === moduleIndex ? '' : 'truncate'}`}>
+                        {moduleItem.title}
+                      </div>
+                      {moduleIndex === 0 && (
+                        <span className="text-xs font-medium text-yellow-400 block mt-1">
+                          Estamos refazendo este módulo
+                        </span>
+                      )}
+                    </h2>
+
                   
-                  <div className="flex-grow"></div>
+
+                  
+                  
+                  <div className="flex-grow">
+                  </div>
+                  
                   <ChevronDown
                     className={`h-8 w-8 text-white transition-transform duration-200 ml-4 ${
                       currentModule === moduleIndex ? 'transform rotate-180' : ''
                     }`}
                   />
+
+                   
                 </div>
                 {currentModule === moduleIndex && (
                   <div className="space-y-4">

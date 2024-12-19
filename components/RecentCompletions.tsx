@@ -107,7 +107,7 @@ export function RecentCompletions({ modules }: RecentCompletionsProps) {
         </h2>
 
         <div className="flex items-center text-xs text-gray-400">
-          <span>Atualizando em tempo real</span>
+          <span>Em tempo real</span>
           <motion.span
             className="ml-1 text-green-500"
             {...pulseAnimation}
