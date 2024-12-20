@@ -24,7 +24,7 @@ import { ReferralProcessor } from "@/components/ReferralProcessor"
 import { AccessLevel, hasModuleAccess } from '@/types/access-levels';
 import { AdminModal } from './AdminModal'
 import { PMPersonalityTest } from './PMPersonalityTest'
-
+import { APITest } from './APITest'
 interface CustomSession extends Session {
   user: {
     id: string;
@@ -317,6 +317,7 @@ function CoursePlatformContent() {
   const [ratingCourseId, setRatingCourseId] = useState<number | null>(null)
   const [showAdminModal, setShowAdminModal] = useState(false)
   const [showPMTest, setShowPMTest] = useState(false)
+  const [showAPITest, setShowAPITest] = useState<'basic' | 'intermediate' | 'advanced' | null>(null);
   
   
 
@@ -742,9 +743,9 @@ function CoursePlatformContent() {
   };
 
   const hasCompletedRequiredLessons = (completedCourses: {[key: number]: number[]}) => {
-    // Module 5 (index 4) lessons 50, 51, and 52 correspond to indices 0, 1, and 2
+    // Module 5 (index 4) lessons 50, 51, and 52 correspond to indices 0, 1, and 2, changed to all lessons
     const module5Completions = completedCourses[4] || [];
-    return module5Completions.includes(0) && module5Completions.includes(1) && module5Completions.includes(2);
+    return module5Completions.includes(0) && module5Completions.includes(1) && module5Completions.includes(2) && module5Completions.includes(3) && module5Completions.includes(4) && module5Completions.includes(5) && module5Completions.includes(6);
   };
 
   const markAsCompleted = async (moduleId: number, courseId: number) => {
@@ -1050,7 +1051,7 @@ function CoursePlatformContent() {
                     {!hasCompletedRequiredLessons(completedCourses) && (
                       <div className="absolute inset-0 flex items-center justify-center">
                         <div className="bg-black bg-opacity-80 text-white px-3 py-2 rounded-md text-sm text-center">
-                          Esse cupom será liberado ao concluir a aula 50, 51 e 52
+                          Esse cupom será liberado ao concluir o Módulo 05: APIs
                         </div>
                       </div>
                     )}
@@ -1126,6 +1127,34 @@ function CoursePlatformContent() {
                     >
                       <span className="text-white font-bold">{Math.round(getModuleProgress(moduleIndex))}% Concluído</span>
                     </motion.div>
+
+                    {moduleIndex === 4 && currentModule === moduleIndex && (
+                  <div className="grid grid-cols-3 gap-2 mt-4 mb-6">
+                    <div 
+                      onClick={() => setShowAPITest('basic')}
+                      className="bg-gray-800 py-2 px-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors text-center"
+                    >
+                      <h3 className="text-xs font-semibold text-white">Básico</h3>
+                      <span className="text-xs bg-blue-500 bg-opacity-20 text-blue-300 px-2 py-0.5 rounded">Teste</span>
+                    </div>
+                    
+                    <div 
+                      onClick={() => setShowAPITest('intermediate')}
+                      className="bg-gray-800 py-2 px-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors text-center"
+                    >
+                      <h3 className="text-xs font-semibold text-white">Intermediário</h3>
+                      <span className="text-xs bg-blue-500 bg-opacity-20 text-blue-300 px-2 py-0.5 rounded">Teste</span>
+                    </div>
+                    
+                    <div 
+                      onClick={() => setShowAPITest('advanced')}
+                      className="bg-gray-800 py-2 px-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors text-center"
+                    >
+                      <h3 className="text-xs font-semibold text-white">Avançado</h3>
+                      <span className="text-xs bg-blue-500 bg-opacity-20 text-blue-300 px-2 py-0.5 rounded">Teste</span>
+                    </div>
+                  </div>
+                )}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                       {moduleItem.courses.map((course, courseIndex) => (
                         <div
@@ -1350,6 +1379,19 @@ function CoursePlatformContent() {
             
             {/* Componente */}
             <PMPersonalityTest />
+          </div>
+        </div>
+      )}
+      {showAPITest && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-80">
+          <div className="relative w-full max-w-4xl">
+            <button 
+              onClick={() => setShowAPITest(null)} 
+              className="absolute -top-10 right-0 z-50 p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            >
+              <X className="h-6 w-6 text-gray-200" />
+            </button>
+            <APITest level={showAPITest} />
           </div>
         </div>
       )}
