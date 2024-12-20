@@ -1147,11 +1147,11 @@ function CoursePlatformContent() {
                     </div>
                     
                     <div 
-                      onClick={() => setShowAPITest('advanced')}
+                      onClick={() => setShowAPITest('intermediate')}
                       className="bg-gray-800 py-2 px-4 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors text-center"
                     >
                       <h3 className="text-xs font-semibold text-white">Avançado</h3>
-                      <span className="text-xs bg-blue-500 bg-opacity-20 text-blue-300 px-2 py-0.5 rounded">Teste</span>
+                      <span className="text-xs bg-yellow-500 bg-opacity-20 text-white-300 px-2 py-0.5 rounded">Indisponível</span>
                     </div>
                   </div>
                 )}
