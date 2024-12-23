@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Search, Home, BookOpen, CheckSquare, BarChart2, ChevronRight, ChevronLeft, ChevronDown, Play, Check, X, Gamepad2, Lock, HomeIcon, Sparkles, ListTodo, LineChart, Trophy } from 'lucide-react'
+import { Search, Home, BookOpen, CheckSquare, BarChart2, ChevronRight, ChevronLeft, ChevronDown, Play, Check, X, Gamepad2, Lock, HomeIcon, Sparkles, ListTodo, LineChart, Trophy, Award } from 'lucide-react'
 import { useTheme } from "next-themes"
 import { motion } from "framer-motion"
 import { useSession, signIn, signOut } from "next-auth/react"
@@ -25,6 +25,8 @@ import { AccessLevel, hasModuleAccess } from '@/types/access-levels';
 import { AdminModal } from './AdminModal'
 import { PMPersonalityTest } from './PMPersonalityTest'
 import { APITest } from './APITest'
+import { Certificate } from "@/components/Certificate"
+
 interface CustomSession extends Session {
   user: {
     id: string;
@@ -318,6 +320,11 @@ function CoursePlatformContent() {
   const [showAdminModal, setShowAdminModal] = useState(false)
   const [showPMTest, setShowPMTest] = useState(false)
   const [showAPITest, setShowAPITest] = useState<'basic' | 'intermediate' | 'advanced' | null>(null);
+  const [showCertificate, setShowCertificate] = useState<{
+    moduleName: string;
+    userName: string;
+    completionDate: Date;
+  } | null>(null);
   
   
 
@@ -394,6 +401,16 @@ function CoursePlatformContent() {
           courseId: currentCourse,
         }),
       })
+
+      const progress = getModuleProgress(currentModule)
+      if (progress === 100) {
+        setShowCertificate({
+          moduleName: modules[currentModule].title,
+          userName: session.user.name || "Aluno",
+          completionDate: new Date()
+        })
+      }
+
     }
   
     setCompletedCourses(prev => {
@@ -852,6 +869,12 @@ function CoursePlatformContent() {
     openWebView('https://mpago.li/1dbUF96');
   };
 
+  // First, add a helper function to check if a module is completed
+  const isModuleCompleted = (moduleIndex: number) => {
+    const moduleCompletedCourses = completedCourses[moduleIndex] || [];
+    return moduleCompletedCourses.length === modules[moduleIndex].courses.length;
+  };
+
   if (!mounted) {
     return null
   }
@@ -1268,7 +1291,9 @@ function CoursePlatformContent() {
             
               {modules.map((moduleItem, moduleIndex) => (
                 <div key={moduleIndex} className="bg-gray-800 p-4 rounded-lg">
-                  <h3 className="text-xl font-bold mb-2 text-indigo-300 font-sans tracking-tight sm:text-lg">{moduleItem.title}</h3>
+                  <h3 className="text-xl font-bold mb-2 text-indigo-300 font-sans tracking-tight sm:text-lg">
+                    {moduleItem.title}
+                  </h3>
                   <motion.div
                     className="bg-green-300 h-2 rounded-full mb-2 max-w-full"
                     initial={{ width: 0 }}
@@ -1290,6 +1315,30 @@ function CoursePlatformContent() {
                       </li>
                     ))}
                   </ul>
+                  
+                  {/* Add the certificate button */}
+                  <div className="mt-4 flex justify-end">
+                    <Button
+                      onClick={() => {
+                        if (isModuleCompleted(moduleIndex)) {
+                          setShowCertificate({
+                            moduleName: moduleItem.title,
+                            userName: session?.user?.name || 'Usuário',
+                            completionDate: new Date()
+                          });
+                        }
+                      }}
+                      className={`flex items-center gap-2 ${
+                        isModuleCompleted(moduleIndex)
+                          ? 'bg-indigo-600 hover:bg-indigo-500'
+                          : 'bg-gray-700 cursor-not-allowed opacity-50'
+                      }`}
+                      disabled={!isModuleCompleted(moduleIndex)}
+                    >
+                      <Award className="w-4 h-4" />
+                      {isModuleCompleted(moduleIndex) ? 'Ver Certificado' : 'Certificado Bloqueado'}
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -1394,6 +1443,14 @@ function CoursePlatformContent() {
             <APITest level={showAPITest} />
           </div>
         </div>
+      )}
+      {showCertificate && (
+        <Certificate
+          moduleName={showCertificate.moduleName}
+          userName={showCertificate.userName}
+          completionDate={showCertificate.completionDate}
+          onClose={() => setShowCertificate(null)}
+        />
       )}
     </div>
   )
