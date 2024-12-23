@@ -26,6 +26,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^11.5.4",
     "gray-matter": "^4.0.3",
+    "html2canvas": "^1.4.1",
     "lucide-react": "^0.441.0",
     "marked": "^15.0.3",
     "marked-gfm-heading-id": "^4.1.1",
