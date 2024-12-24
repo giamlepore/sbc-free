@@ -109,7 +109,7 @@ const modules = [
   
 
   {
-    title: 'Módulo 01: Como a Internet Funciona?',
+    title: 'Curso 01: Protocolos, Latência e DNS',
     courses: [
       { title: 'Aula #01 - O que é esperado aqui nesse módulo? Qual a expectativa?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265685?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #02 - O que é a internet?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265764?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -126,7 +126,7 @@ const modules = [
     ]
   },
   {
-    title: 'Módulo 02: Construindo Software',
+    title: 'Curso 02: Testes Automatizados, Bugs, Integração e Implantação',
     courses: [
       { title: 'Aula #08 - Introdução Módulo 2', image: '/m2.png', video: 'https://player.vimeo.com/video/1016266732?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #09 - O ciclo de desenvolvimento de software', image: '/m2.png', video: 'https://player.vimeo.com/video/1016266810?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -150,7 +150,7 @@ const modules = [
   },
   
   {
-    title: 'Módulo 03: Conceitos de básicos de programação para se tornar um "PM full-stack"',
+    title: 'Curso 03: O necessário de HTML, CSS e JavaScript para um PM',
     courses: [
       { title: 'Aula #23 - Pontos importantes em Programação', image: '/m3.png', video: 'https://player.vimeo.com/video/1016270619?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #24 - Você realmente entende o que é "front-end"?', image: '/m3.png', video: 'https://player.vimeo.com/video/1016270903?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -177,7 +177,7 @@ const modules = [
     ]
   },
   {
-    title: 'Módulo 04: Bancos de Dados',
+    title: 'Curso 04: Bancos de Dados, Modelagem, SQL e Stateful Applications',
     courses: [
       { title: 'Aula #042 - Bancos de Dados, o básico', image: '/m4.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
       { title: 'Aula #043 - Tipos de Bancos de Dados I', image: '/m4.png', video: 'https://player.vimeo.com/video/1016276967?badge=0&amp;autopause=0&amp;player_id=0&amp' },
@@ -196,7 +196,7 @@ const modules = [
     ]
   },
   {
-    title: 'Módulo 05: APIs',
+    title: 'Curso 05: APIs, Refatoração de monolitos e Ferramentas',
     courses: [
       { title: 'Aula #053 - Introdução a APIs', image: '/m5.png', video: 'https://player.vimeo.com/video/1027817537?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
       { title: 'Aula #054 - Pra que serve uma API? E sua relação com Organizações', image: '/m5.png', video: 'https://player.vimeo.com/video/1027821623?badge=0&amp;autopause=0&amp;player_id=0&amp' }, 
@@ -324,6 +324,7 @@ function CoursePlatformContent() {
     moduleName: string;
     userName: string;
     completionDate: Date;
+    completedCourses?: string[];
   } | null>(null);
   
   
@@ -1324,7 +1325,8 @@ function CoursePlatformContent() {
                           setShowCertificate({
                             moduleName: moduleItem.title,
                             userName: session?.user?.name || 'Usuário',
-                            completionDate: new Date()
+                            completionDate: new Date(),
+                            completedCourses: moduleItem.courses.map(course => course.title)
                           });
                         }
                       }}
@@ -1449,6 +1451,7 @@ function CoursePlatformContent() {
           moduleName={showCertificate.moduleName}
           userName={showCertificate.userName}
           completionDate={showCertificate.completionDate}
+          completedCourses={showCertificate.completedCourses}
           onClose={() => setShowCertificate(null)}
         />
       )}

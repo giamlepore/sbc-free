@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Download, X, Home } from "lucide-react"
+import { Calendar, MapPin, Download, X, Home, Check, Share2 } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
 import { motion } from "framer-motion"
 import { Button } from "./ui/button"
@@ -10,31 +10,32 @@ interface CertificateProps {
   userName: string
   completionDate: Date
   onClose?: () => void
+  completedCourses?: string[]
 }
 
 const getModuleSummary = (moduleName: string): string => {
   switch (moduleName) {
-    case 'Módulo 01: Como a Internet Funciona?':
+    case 'Curso 01: Protocolos, Latência e DNS':
       return 'Adquiriu conhecimentos fundamentais sobre o funcionamento da Internet, incluindo conceitos de DNS, banda e latência, tecnologias web e sua aplicação prática no desenvolvimento de produtos.';
     
-    case 'Módulo 02: Construindo Software':
+    case 'Curso 02: Testes Automatizados, Bugs, Integração e Implantação':
       return 'Dominou o ciclo de desenvolvimento de software, ambiente de desenvolvimento, controle de versão com Git, testes automatizados e práticas de integração e implantação contínua.';
     
-    case 'Módulo 03: Conceitos de básicos de programação para se tornar um "PM full-stack"':
+    case 'Curso 03: O necessário de HTML, CSS e JavaScript para um PM':
       return 'Desenvolveu competências em HTML, CSS e JavaScript, compreendendo a estrutura do front-end e suas aplicações práticas no desenvolvimento web.';
     
-    case 'Módulo 04: Bancos de Dados':
+    case 'Curso 04: Bancos de Dados, Modelagem, SQL e Stateful Applications':
       return 'Compreendeu os fundamentos de bancos de dados, diferentes tipos de DBMS, modelagem de dados e SQL, além de aplicações práticas em produtos digitais.';
     
-    case 'Módulo 05: APIs':
+    case 'Curso 05: APIs, Refatoração de monolitos e Ferramentas':
       return 'Aprofundou-se no entendimento de APIs, sua importância nas organizações modernas, diferentes tipos de APIs e tecnologias relevantes para integração de sistemas.';
     
     default:
-      return 'Demonstrou excelência na compreensão e aplicação dos conceitos apresentados neste módulo.';
+      return 'Demonstrou excelência na compreensão e aplicação dos conceitos apresentados neste curso.';
   }
 };
 
-export function Certificate({ moduleName, userName, completionDate, onClose }: CertificateProps) {
+export function Certificate({ moduleName, userName, completionDate, onClose, completedCourses }: CertificateProps) {
   const certificateRef = useRef<HTMLDivElement>(null)
   const qrCodeUrl = "https://sbc-free.vercel.app"
 
@@ -42,13 +43,23 @@ export function Certificate({ moduleName, userName, completionDate, onClose }: C
     if (!certificateRef.current) return
 
     try {
-      // Create a canvas from the certificate div
+      // Add a small delay to ensure SVGs are fully rendered
+      await new Promise(resolve => setTimeout(resolve, 200))
+
       const canvas = await html2canvas(certificateRef.current, {
-        scale: 3, // Aumentar a qualidade
+        scale: 3,
         backgroundColor: null,
         logging: false,
-        useCORS: true, // Permitir carregar recursos cross-origin
-        allowTaint: true // Permitir elementos externos
+        useCORS: true,
+        allowTaint: true,
+        // Add these options to improve SVG rendering
+        onclone: (document, element) => {
+          const svgs = element.getElementsByTagName('svg')
+          Array.from(svgs).forEach(svg => {
+            svg.setAttribute('width', svg.getBoundingClientRect().width.toString())
+            svg.setAttribute('height', svg.getBoundingClientRect().height.toString())
+          })
+        }
       })
 
       // Convert canvas to blob
@@ -72,22 +83,62 @@ export function Certificate({ moduleName, userName, completionDate, onClose }: C
     }
   }
 
+  const handleShare = async () => {
+    if (!certificateRef.current) return
+
+    try {
+      const canvas = await html2canvas(certificateRef.current)
+      const imageUrl = canvas.toDataURL('image/png')
+      
+      // Criar um blob da imagem
+      const blob = await (await fetch(imageUrl)).blob()
+      const file = new File([blob], 'certificado.png', { type: 'image/png' })
+
+      // Texto para compartilhamento
+      const shareText = `Acabei de concluir o módulo "${moduleName}" na SBC School! 🎉\n\n` +
+        `Muito feliz em compartilhar mais essa conquista na minha jornada de aprendizado.\n\n` +
+        `#SBCSchool #Educação #Desenvolvimento #Tecnologia`
+
+      // Verificar se o navegador suporta Web Share API
+      if (navigator.share) {
+        await navigator.share({
+          text: shareText,
+          files: [file]
+        })
+      } else {
+        // Fallback para compartilhamento direto no LinkedIn
+        const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`
+        window.open(linkedinUrl, '_blank')
+      }
+    } catch (error) {
+      console.error('Erro ao compartilhar:', error)
+    }
+  }
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/80 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-gray-900/80 backdrop-blur-sm p-4 overflow-y-auto"
     >
-      <div className="relative w-full max-w-3xl">
+      <div className="relative w-full max-w-3xl mt-16 mb-8">
         {/* Botão de fechar flutuante */}
         {onClose && (
-          <button 
-            onClick={onClose} 
-            className="absolute -top-10 right-0 z-50 p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
-          >
-            <X className="h-6 w-6 text-gray-200" />
-          </button>
+          <div className="absolute -top-10 right-0 z-50 flex gap-2">
+            <button 
+              onClick={handleShare}
+              className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            >
+              <Share2 className="h-6 w-6 text-green-500" />
+            </button>
+            <button 
+              onClick={onClose} 
+              className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors"
+            >
+              <X className="h-6 w-6 text-gray-200" />
+            </button>
+          </div>
         )}
         
         {/* Certificado */}
@@ -106,7 +157,7 @@ export function Certificate({ moduleName, userName, completionDate, onClose }: C
                   />
                 </span>
                 <h1 className="text-2xl font-bold mb-2">Certificado de Conclusão</h1>
-                <p className="text-gray-400">{moduleName}</p>
+                <p className="text-xl text-gray-400">{moduleName}</p>
                 <p className="text-gray-400">SBC SCHOOL</p>
               </div>
               <div className="flex flex-col items-end">
@@ -123,10 +174,22 @@ export function Certificate({ moduleName, userName, completionDate, onClose }: C
           
           <div className="p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold mb-2 text-gray-200">Detalhes do Módulo</h2>
-              <p className="text-gray-400">
+              <h2 className="text-xl font-semibold mb-2 text-gray-200">Detalhes do Curso</h2>
+              <p className="text-gray-400 mb-4">
                 {getModuleSummary(moduleName)}
               </p>
+              
+              <div className="mt-4 space-y-2">
+                <h3 className="text-lg font-semibold text-gray-300">Aulas Concluídas:</h3>
+                <div className="space-y-1">
+                  {completedCourses?.map((course, index) => (
+                    <div key={index} className="flex items-center text-gray-400">
+                      <Check className="min-w-4 min-h-4 w-4 h-4 mr-2 text-green-500" />
+                      <span>{course}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
             
             <div className="flex items-center mb-4">
@@ -139,10 +202,15 @@ export function Certificate({ moduleName, userName, completionDate, onClose }: C
                 })}
               </span>
             </div>
+
+            <div className="flex items-center mb-4">
+              <Home className="w-5 h-5 mr-2 text-gray-500" />
+              <span className="text-gray-300">Duração do Curso: 2,5 horas</span>
+            </div>
             
             <div className="flex items-center mb-4">
               <MapPin className="w-5 h-5 mr-2 text-gray-500" />
-              <span className="text-gray-300">Technical Product Manager Training</span>
+              <span className="text-gray-300 font-bold">Technical Product Manager Training</span>
             </div>
           </div>
 
