@@ -111,13 +111,14 @@ const modules = [
   {
     title: 'Curso 01: Protocolos, Latência e DNS',
     courses: [
-      { title: 'Aula #01 - O que é esperado aqui nesse módulo? Qual a expectativa?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265685?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #02 - O que é a internet?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265764?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #03 - Tecnologias por trás da internet', image: '/m1.png', video: 'https://player.vimeo.com/video/1016265897?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #04 - Banda e Latência', image: '/m1.png', video: 'https://player.vimeo.com/video/1016266097?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #05 - Web além do endereço de browser', image: '/m1.png', video: 'https://player.vimeo.com/video/1016266177?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #06 (Prática) - DNS na prática com Google DNS', image: '/m1.png', video: 'https://player.vimeo.com/video/1016266528?badge=0&amp;autopause=0&amp;player_id=0&amp' },
-      { title: 'Aula #07 (Prática) - Por que é útil saber disso tudo?', image: '/m1.png', video: 'https://player.vimeo.com/video/1016266562?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #00 - O que é esperado aqui nesse módulo? Qual a expectativa?', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046496?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #01 - O que é a internet?', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046500?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #02 - Tecnologias por trás da internet', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046502?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #03 - Envio e recebimento de pacotes', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046513?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #04 - Banda e Latência', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046518?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #05 - Web além do endereço de browser', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046540?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #06 (Prática) - DNS na prática com Google DNS', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046544?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #07 (Prática) - Por que é útil saber disso tudo?', image: '/m1.png', video: 'https://player.vimeo.com/video/1042046576?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
     tasks: [
       { title: 'Em breve', completed: false },
@@ -211,7 +212,7 @@ const modules = [
     ]
   },
   {
-    title: 'Módulo 06: AI, fora o hype',
+    title: 'Curso 06: AI, fora o hype',
     courses: [
       { title: 'Módulo em construção', image: '/m6.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -221,7 +222,7 @@ const modules = [
   },
 
   {
-    title: 'Módulo 07: Escalabilidade',
+    title: 'Curso 07: Escalabilidade',
     courses: [
       { title: 'Módulo em construção', image: '/m7.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -231,7 +232,7 @@ const modules = [
   },
 
   {
-    title: 'Módulo 08: DevOps',
+    title: 'Curso 08: DevOps',
     courses: [
       { title: 'Módulo em construção', image: '/m8.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -241,7 +242,7 @@ const modules = [
   },
 
   {
-    title: 'Módulo 09: Segurança e Privacidade',
+    title: 'Curso 09: Segurança e Privacidade',
     courses: [
       { title: 'Módulo em construção', image: '/m9.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -251,7 +252,7 @@ const modules = [
   },
 
   {
-    title: 'Módulo 10: Blockchain, cripto e Web3',
+    title: 'Curso 10: Blockchain, cripto e Web3',
     courses: [
       { title: 'Módulo em construção', image: '/m10.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
@@ -1120,8 +1121,8 @@ function CoursePlatformContent() {
                         {moduleItem.title}
                       </div>
                       {moduleIndex === 0 && (
-                        <span className="text-xs font-medium text-yellow-400 block mt-1">
-                          Estamos refazendo este módulo
+                        <span className="text-xs font-medium text-green-500 block mt-1">
+                          Refizemos este módulo recentemente
                         </span>
                       )}
                     </h2>
