@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Dialog } from '@headlessui/react';
 import { AccessLevel } from '@prisma/client';
 import { Button } from './ui/button';
+import { Download } from 'lucide-react';
 
 interface User {
   id: string;
@@ -136,14 +137,46 @@ export function AdminModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =
     );
   };
 
+  const generateCSV = () => {
+    const csvContent = [
+      ['Nome', 'Email', 'Nível de Acesso', 'Última Sessão'],
+      ...users.map(user => [
+        user.name,
+        user.email,
+        user.accessLevel,
+        user.lastSessionAt ? new Date(user.lastSessionAt).toLocaleString('pt-BR') : 'Nunca acessou'
+      ])
+    ]
+    .map(row => row.join(','))
+    .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', `usuarios-${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="mx-auto max-w-3xl w-full bg-gray-800 rounded-xl p-6 max-h-[90vh] flex flex-col">
-          <Dialog.Title className="text-xl font-bold text-white mb-4">
-            Gerenciar Usuários
+          <Dialog.Title className="text-xl font-bold text-white mb-4 flex justify-between items-center">
+            <span>Gerenciar Usuários</span>
+            <Button
+              onClick={generateCSV}
+              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+              size="sm"
+            >
+              <Download className="w-4 h-4" />
+              Exportar CSV
+            </Button>
           </Dialog.Title>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
