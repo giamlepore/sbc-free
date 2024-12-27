@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettify": "prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "**/*": [
+      "next lint --fix --file",
+      "prettier --write --ignore-unknown"
+    ]
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
@@ -52,7 +60,11 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "postcss": "^8",
+    "prettier": "3.4.2",
     "prisma": "^5.20.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"

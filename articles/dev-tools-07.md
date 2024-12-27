@@ -17,6 +17,7 @@ Parabéns, você acabou de acessar o **DevTools** do Google. Em um primeiro mome
 ### **O que é o DevTools?**
 
 Segundo o próprio Google:
+
 - O Chrome DevTools é um **conjunto de ferramentas** para desenvolvedores da Web integrado diretamente ao navegador Google Chrome.
 - O DevTools pode **ajudar você a editar páginas rapidamente** e **diagnosticar problemas em tempo real**, o que ajuda a criar sites melhores em menos tempo.
 
@@ -44,7 +45,7 @@ Você também consegue, ao selecionar a seta mais à esquerda, entender como tod
 
 ### **Editar o HTML e CSS**
 
-Se você quiser também mexer no HTML e CSS da página, você consegue. Por exemplo, vou mudar a cor da página da SBC de preto para bege. 
+Se você quiser também mexer no HTML e CSS da página, você consegue. Por exemplo, vou mudar a cor da página da SBC de preto para bege.
 
 - **Cliquei com botão direito** em inspecionar.
 - Fui na aba **“Styles”**.
@@ -64,7 +65,8 @@ Veja a pequena mudança que fiz no código. Apenas selecionei o elemento com o q
 
 ### **Identificar erros no Console**
 
-Agora vem outra parte interessante, o **“Console”**. Esse é o lugar que você clica para identificar erros e arrumá-los. 
+Agora vem outra parte interessante, o **“Console”**. Esse é o lugar que você clica para identificar erros e arrumá-los.
+
 1. Clique em **“Inspecionar”**.
 2. Depois vá até a aba **Console**.
 3. Veja se há algum erro listado.

@@ -19,4 +19,3 @@
 2. **Assets**: são todos os outros elementos que compõem um website, como imagens, música, vídeos, documentos e PDFs.
 
 **Fonte: MDN Web Docs**
-

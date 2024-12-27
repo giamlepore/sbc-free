@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/lib/prisma'
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/lib/prisma";
 
 interface CourseCompletion {
   completedAt: Date;
@@ -24,7 +24,9 @@ function calculateStreak(completions: CourseCompletion[]): number {
       currentStreak = 1;
       lastCompletionDate = completionDate;
     } else {
-      const dayDifference = (lastCompletionDate.getTime() - completionDate.getTime()) / (1000 * 3600 * 24);
+      const dayDifference =
+        (lastCompletionDate.getTime() - completionDate.getTime()) /
+        (1000 * 3600 * 24);
 
       if (dayDifference === 1) {
         currentStreak++;
@@ -46,8 +48,11 @@ function calculateStreak(completions: CourseCompletion[]): number {
   return currentStreak;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'GET') {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  if (req.method === "GET") {
     const users = await prisma.user.findMany({
       select: {
         id: true,
@@ -56,53 +61,57 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           select: {
             completedAt: true,
             moduleId: true,
-            courseId: true
+            courseId: true,
           },
           orderBy: {
-            completedAt: 'desc'
-          }
+            completedAt: "desc",
+          },
         },
         progress: {
           where: {
-            completed: true
-          }
-        }
+            completed: true,
+          },
+        },
       },
     });
 
-    const leaderboardWithPoints = await Promise.all(users.map(async user => {
-      const streak = calculateStreak(user.courseCompletions);
-      let points = 0;
+    const leaderboardWithPoints = await Promise.all(
+      users.map(async (user) => {
+        const streak = calculateStreak(user.courseCompletions);
+        let points = 0;
 
-      // Points from courseCompletions
-      const uniqueCompletions = new Set(user.courseCompletions.map(completion => 
-        `${completion.moduleId}-${completion.courseId}`
-      ));
+        // Points from courseCompletions
+        const uniqueCompletions = new Set(
+          user.courseCompletions.map(
+            (completion) => `${completion.moduleId}-${completion.courseId}`,
+          ),
+        );
 
-      uniqueCompletions.forEach(() => {
-        if (streak < 2) {
-          points += 5;
-        } else if (streak >= 2 && streak < 10) {
-          points += 5 + streak - 1;
-        } else if (streak >= 10) {
-          points += 15;
-        }
-      });
+        uniqueCompletions.forEach(() => {
+          if (streak < 2) {
+            points += 5;
+          } else if (streak >= 2 && streak < 10) {
+            points += 5 + streak - 1;
+          } else if (streak >= 10) {
+            points += 15;
+          }
+        });
 
-      // Add points from progress (5 points each)
-      const progressCount = user.progress?.length || 0;
-      points += progressCount * 5;
+        // Add points from progress (5 points each)
+        const progressCount = user.progress?.length || 0;
+        points += progressCount * 5;
 
-      // Cap at 20 points per completed course
-      const totalCompletions = uniqueCompletions.size + progressCount;
-      points = Math.min(points, totalCompletions * 20);
+        // Cap at 20 points per completed course
+        const totalCompletions = uniqueCompletions.size + progressCount;
+        points = Math.min(points, totalCompletions * 20);
 
-      return {
-        id: user.id,
-        name: user.name,
-        points: points
-      };
-    }));
+        return {
+          id: user.id,
+          name: user.name,
+          points: points,
+        };
+      }),
+    );
 
     const sortedLeaderboard = leaderboardWithPoints
       .sort((a, b) => b.points - a.points)
@@ -110,6 +119,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json(sortedLeaderboard);
   } else {
-    res.status(405).json({ message: 'Method not allowed' });
+    res.status(405).json({ message: "Method not allowed" });
   }
 }

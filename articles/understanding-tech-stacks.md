@@ -1,8 +1,6 @@
 # Backend
 
-
 > Hoje vamos conversar sobre um tema essencial que sempre surge dúvida, back vs. front: o que acontece entre o momento que um cliente faz uma requisição e recebe uma resposta. O que rola por trás das cortinas?
-
 
 ### Front-end vs. Back-end: Qual é a Diferença?
 

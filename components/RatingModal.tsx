@@ -1,42 +1,42 @@
-import { useState } from 'react'
-import { Star } from 'lucide-react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from './ui/button'
+import { useState } from "react";
+import { Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "./ui/button";
 
 interface RatingModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: (rating: number) => Promise<void>
-  moduleId: number
-  courseId: number
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (rating: number) => Promise<void>;
+  moduleId: number;
+  courseId: number;
 }
 
-export function RatingModal({ isOpen, onClose, onSubmit, moduleId, courseId }: RatingModalProps) {
-  const [rating, setRating] = useState(0)
-  const [hoveredRating, setHoveredRating] = useState(0)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export function RatingModal({ isOpen, onClose, onSubmit }: RatingModalProps) {
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async () => {
-    if (rating === 0) return
-    
-    setIsSubmitting(true)
+    if (rating === 0) return;
+
+    setIsSubmitting(true);
     try {
-      await onSubmit(rating)
+      await onSubmit(rating);
     } finally {
-      setIsSubmitting(false)
-      onClose()
+      setIsSubmitting(false);
+      onClose();
     }
-  }
+  };
 
   const handleSkip = async () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     try {
-      await onSubmit(0)
+      await onSubmit(0);
     } finally {
-      setIsSubmitting(false)
-      onClose()
+      setIsSubmitting(false);
+      onClose();
     }
-  }
+  };
 
   return (
     <AnimatePresence>
@@ -56,7 +56,7 @@ export function RatingModal({ isOpen, onClose, onSubmit, moduleId, courseId }: R
             <h3 className="text-xl font-bold text-gray-200 mb-4 text-center">
               Como você avalia esta aula?
             </h3>
-            
+
             <div className="flex justify-center space-x-2 mb-6">
               {[1, 2, 3, 4, 5].map((value) => (
                 <button
@@ -69,8 +69,8 @@ export function RatingModal({ isOpen, onClose, onSubmit, moduleId, courseId }: R
                   <Star
                     className={`w-8 h-8 transition-colors ${
                       value <= (hoveredRating || rating)
-                        ? 'text-yellow-400 fill-yellow-400'
-                        : 'text-gray-500'
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-500"
                     }`}
                   />
                 </button>
@@ -99,7 +99,7 @@ export function RatingModal({ isOpen, onClose, onSubmit, moduleId, courseId }: R
                     </div>
                   </>
                 ) : (
-                  'Avaliar'
+                  "Avaliar"
                 )}
               </Button>
             </div>
@@ -107,5 +107,5 @@ export function RatingModal({ isOpen, onClose, onSubmit, moduleId, courseId }: R
         </motion.div>
       )}
     </AnimatePresence>
-  )
+  );
 }

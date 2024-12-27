@@ -1,8 +1,8 @@
-import NextAuth, { Session, User, Account, Profile } from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import prisma from "@/lib/prisma"
-import { AccessLevel } from '@prisma/client'
+import NextAuth, { Session, User, Account, Profile } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "@/lib/prisma";
+import { AccessLevel } from "@prisma/client";
 
 interface ExtendedSession extends Session {
   user: {
@@ -11,7 +11,7 @@ interface ExtendedSession extends Session {
     email?: string | null;
     image?: string | null;
     accessLevel: AccessLevel;
-  }
+  };
 }
 
 export const authOptions = {
@@ -23,13 +23,19 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    session: async ({ session, user }: { session: Session; user: User }): Promise<ExtendedSession> => {
+    session: async ({
+      session,
+      user,
+    }: {
+      session: Session;
+      user: User;
+    }): Promise<ExtendedSession> => {
       if (session?.user) {
         const dbUser = await prisma.user.findUnique({
           where: { id: user.id },
           include: {
-            referrals: true
-          }
+            referrals: true,
+          },
         });
 
         let accessLevel: AccessLevel = AccessLevel.LEAD;
@@ -41,9 +47,11 @@ export const authOptions = {
           accessLevel = AccessLevel.LEAD_PLUS;
         }
 
-        if (dbUser?.accessLevel === AccessLevel.ADMIN || 
-            dbUser?.accessLevel === AccessLevel.STUDENT || 
-            dbUser?.accessLevel === AccessLevel.LEAD_PLUS) {
+        if (
+          dbUser?.accessLevel === AccessLevel.ADMIN ||
+          dbUser?.accessLevel === AccessLevel.STUDENT ||
+          dbUser?.accessLevel === AccessLevel.LEAD_PLUS
+        ) {
           accessLevel = dbUser.accessLevel;
         }
 
@@ -52,30 +60,29 @@ export const authOptions = {
           user: {
             ...session.user,
             id: user.id,
-            accessLevel: dbUser?.accessLevel || accessLevel
-          }
+            accessLevel: dbUser?.accessLevel || accessLevel,
+          },
         };
       }
       return session as ExtendedSession;
     },
-    signIn: async ({ 
-      user, 
-      account, 
-      profile 
-    }: { 
-      user: User; 
-      account: Account | null; 
-      profile?: Profile 
+    signIn: async ({
+      user,
+      account,
+    }: {
+      user: User;
+      account: Account | null;
+      profile?: Profile;
     }) => {
       try {
         if (!user.email || !account) {
-          console.error('User email and account are required');
+          console.error("User email and account are required");
           return false;
         }
 
-        console.log('SignIn attempt:', { user, account });
+        console.log("SignIn attempt:", { user, account });
         const existingUser = await prisma.user.findUnique({
-          where: { email: user.email }
+          where: { email: user.email },
         });
 
         // Caso 1: Novo usuário ou usuário excluído
@@ -86,7 +93,7 @@ export const authOptions = {
               data: {
                 id: user.id,
                 email: user.email,
-                name: user.name || '',
+                name: user.name || "",
                 accessLevel: AccessLevel.LEAD,
                 accounts: {
                   create: {
@@ -98,25 +105,25 @@ export const authOptions = {
                     token_type: account.token_type,
                     scope: account.scope,
                     id_token: account.id_token,
-                    session_state: account.session_state
-                  }
-                }
-              }
+                    session_state: account.session_state,
+                  },
+                },
+              },
             });
           });
-        } 
+        }
         // Caso 2: Usuário existe (mesmo ID ou ID diferente)
         else {
           // Verifica se precisa atualizar o ID
           if (existingUser.id !== user.id) {
-            console.log('Updating user ID:', {
+            console.log("Updating user ID:", {
               oldId: existingUser.id,
-              newId: user.id
+              newId: user.id,
             });
-            
+
             await prisma.user.update({
               where: { id: existingUser.id },
-              data: { id: user.id }
+              data: { id: user.id },
             });
           }
 
@@ -125,22 +132,22 @@ export const authOptions = {
             const existingAccount = await prisma.account.findFirst({
               where: {
                 provider: account.provider,
-                providerAccountId: account.providerAccountId
-              }
+                providerAccountId: account.providerAccountId,
+              },
             });
 
             if (existingAccount) {
               // Atualiza a conta existente
               await prisma.account.update({
                 where: { id: existingAccount.id },
-                data: { 
+                data: {
                   userId: user.id,
                   access_token: account.access_token,
                   expires_at: account.expires_at,
                   id_token: account.id_token,
                   scope: account.scope,
-                  token_type: account.token_type
-                }
+                  token_type: account.token_type,
+                },
               });
             } else {
               // Cria uma nova conta
@@ -155,32 +162,33 @@ export const authOptions = {
                   token_type: account.token_type,
                   scope: account.scope,
                   id_token: account.id_token,
-                  session_state: account.session_state
-                }
+                  session_state: account.session_state,
+                },
               });
             }
           }
         }
 
         // Processa referral se existir
-        if (account?.provider === 'google') {
-          const referralCode = account.state ? 
-            new URLSearchParams(account.state as string).get('referralCode') : null;
-          
+        if (account?.provider === "google") {
+          const referralCode = account.state
+            ? new URLSearchParams(account.state as string).get("referralCode")
+            : null;
+
           if (referralCode && user.id !== referralCode) {
             await prisma.user.update({
               where: { id: user.id },
-              data: { referredById: referralCode }
+              data: { referredById: referralCode },
             });
           }
         }
         return true;
       } catch (error) {
-        console.error('Error in signIn callback:', error);
+        console.error("Error in signIn callback:", error);
         return false;
       }
-    }
-  }
-}
+    },
+  },
+};
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
