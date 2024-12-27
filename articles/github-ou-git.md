@@ -7,6 +7,7 @@
 **GitHub** é uma plataforma baseada em nuvem onde você guarda, compartilha e trabalha junto com outras pessoas para escrever código.
 
 Salvar o seu código em um "repositório" ou "repo" no GitHub permite que você:
+
 - Compartilhe o seu trabalho.
 - Rastreie e gerencie mudanças no seu código.
 - Permita que outras pessoas revisem seu código e façam sugestões.
@@ -23,6 +24,7 @@ O trabalho colaborativo no GitHub é possível justamente por conta de uma plata
 O Git é especialmente útil quando você e outras pessoas estão fazendo mudanças no mesmo arquivo ao mesmo tempo.
 
 ### Como funciona o Git:
+
 1. Você cria uma **ramificação** (branch) da cópia principal dos arquivos.
 2. Faz edições de forma independente e guarda no seu "acervo pessoal".
 3. Deixa o Git mesclar suas alterações na cópia principal, garantindo que suas alterações não afetem as de outras pessoas.
@@ -39,6 +41,7 @@ Quando você sobe arquivos no GitHub, você está armazenando-os em um repositó
 Isso significa que quando você faz mudanças (ou "commits") nos seus arquivos do GitHub, o **Git** automaticamente começa a rastrear e gerenciar as alterações.
 
 ### Termos comuns:
+
 - **Pull**: puxar as últimas mudanças feitas por colaboradores no repositório remoto do GitHub.
 - **Push**: empurrar as suas próprias mudanças para o repositório remoto do GitHub.
 

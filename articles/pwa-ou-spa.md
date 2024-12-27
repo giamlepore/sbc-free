@@ -23,6 +23,7 @@ A primeira coisa é que não existe um melhor ou pior para todos os casos.
 ---
 
 ### **PWA (Progressive Web Application)**
+
 Um progressive web app (PWA) é um tipo de web app que tem como objetivo entregar uma experiência semelhante aos apps nativos para os usuários. Surgiu em 2015 pelo Google.
 
 PWAs são feitos para funcionar em qualquer aparelho: smartphones, tablets, desktops e podem ser acessados em qualquer browser (Chrome, Firefox, Safari, etc.).
@@ -40,11 +41,13 @@ Outro ponto mega interessante dos PWAs são as atualizações automáticas. Pens
 Para quem já mexeu com app, sabe que, em alguns casos (tirando um force update), demoram semanas para +80% dos usuários chegarem na última versão. E a consequência de usuários em versões anteriores é que eles continuam com uma versão que não teve manutenção e que, por vezes, apresenta diversos bugs.
 
 ### Conclusão PWA
+
 Vale analisar bem o seu público-alvo (ex: relação deles com os apps, quando baixam um app, qual o gatilho, se tem ou não espaço no celular) e a frequência com que acessam seu app (é algo periódico? semanal? mensal?). Essas perguntas ajudam a perceber se esse talvez seja o caminho.
 
 ---
 
 ### **SPA (Single Page Application)**
+
 Single-page applications (SPA) de forma simplificada: o conteúdo da página carrega conforme o usuário "scrolla" (arrasta a página para baixo).
 
 Algo parecido com o feed do Instagram, que só aparece quando você vai até o final da página.
@@ -60,6 +63,7 @@ Quando comparado com aplicações web tradicionais, segundo uma página especial
 ---
 
 ### **Comparação PWA x SPA**
+
 Agora que você sabe um pouco mais de PWA e SPA, vamos ver qual é melhor para cada situação.
 
 **Resumindo de forma objetiva, sem considerar o contexto:**
