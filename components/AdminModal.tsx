@@ -139,13 +139,29 @@ export function AdminModal({ isOpen, onClose }: { isOpen: boolean; onClose: () =
 
   const generateCSV = () => {
     const csvContent = [
-      ['Nome', 'Email', 'Nível de Acesso', 'Última Sessão'],
-      ...users.map(user => [
-        user.name,
-        user.email,
-        user.accessLevel,
-        user.lastSessionAt ? new Date(user.lastSessionAt).toLocaleString('pt-BR') : 'Nunca acessou'
-      ])
+      ['Nome', 'Email', 'Nível de Acesso', 'Última Sessão', 'Última Aula Concluída', 'Data da Conclusão'],
+      ...users.map(user => {
+        const lastCompletion = user.courseCompletions?.sort((a, b) => 
+          new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
+        )[0];
+
+        const lastCompletionInfo = lastCompletion 
+          ? `Módulo ${lastCompletion.moduleId + 1}, Aula ${lastCompletion.courseId + 1}`
+          : 'Nenhuma aula concluída';
+
+        const completionDate = lastCompletion
+          ? new Date(lastCompletion.completedAt).toLocaleString('pt-BR')
+          : 'N/A';
+
+        return [
+          user.name,
+          user.email,
+          user.accessLevel,
+          user.lastSessionAt ? new Date(user.lastSessionAt).toLocaleString('pt-BR') : 'Nunca acessou',
+          lastCompletionInfo,
+          completionDate
+        ];
+      })
     ]
     .map(row => row.join(','))
     .join('\n');

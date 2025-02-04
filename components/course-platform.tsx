@@ -26,6 +26,7 @@ import { AdminModal } from './AdminModal'
 import { PMPersonalityTest } from './PMPersonalityTest'
 import { APITest } from './APITest'
 import { Certificate } from "@/components/Certificate"
+import { LoadingScreen } from './LoadingScreen'
 
 interface CustomSession extends Session {
   user: {
@@ -327,6 +328,7 @@ function CoursePlatformContent() {
     completionDate: Date;
     completedCourses?: string[];
   } | null>(null);
+  const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
   
   
 
@@ -510,9 +512,23 @@ function CoursePlatformContent() {
   }
 
   const renderCourseVideos = () => {
-    const currentModuleCourses = modules[currentModule].courses
-    const previousVideos = currentModuleCourses.slice(0, currentCourse)
-    const nextVideos = currentModuleCourses.slice(currentCourse + 1)
+    const currentModuleCourses = modules[currentModule].courses;
+    const previousVideos = currentModuleCourses.slice(0, currentCourse);
+    const nextVideos = currentModuleCourses.slice(currentCourse + 1);
+    
+    const handleNextVideoClick = (index: number) => {
+      const nextCourseIndex = currentCourse + index + 1;
+      
+      // Check if LEAD user is trying to access a restricted lesson
+      if (session?.user?.accessLevel === 'LEAD' && 
+          currentModule === 0 && 
+          nextCourseIndex >= 4) {
+        setShowAccessDeniedModal(true);
+        return;
+      }
+      
+      setCurrentCourse(nextCourseIndex);
+    };
     
     return (
       <div className="mt-6 space-y-6">
@@ -521,13 +537,14 @@ function CoursePlatformContent() {
             <h3 className="text-2xl font-bold mb-4 text-gray-200 font-sans">Next in this module:</h3>
             <ul className="space-y-2">
               {nextVideos.map((course, index) => (
-                <li key={index} className="flex items-center p-2 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors duration-300" onClick={() => {
-                  setCurrentCourse(currentCourse + index + 1)
-                }}>
+                <li 
+                  key={index} 
+                  className="flex items-center p-2 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors duration-300" 
+                  onClick={() => handleNextVideoClick(index)}
+                >
                   <Play className="h-5 w-5 text-blue-500 flex-shrink-0 mr-2" />
                   <span className="text-gray-200 font-sans flex-grow truncate">{course.title}</span>
-                  {/* <span className="text-sm text-gray-400 ml-auto font-sans">{course.duration}</span> */}
-                  <div className="h-5 w-5 flex-shrink-0 ml-2" /> {/* Placeholder to maintain consistent spacing */}
+                  <div className="h-5 w-5 flex-shrink-0 ml-2" />
                 </li>
               ))}
             </ul>
@@ -538,16 +555,17 @@ function CoursePlatformContent() {
             <h3 className="text-2xl font-bold mb-4 text-gray-200 font-sans">Previous in this module:</h3>
             <ul className="space-y-2">
               {previousVideos.map((course, index) => (
-                <li key={index} className="flex items-center p-2 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors duration-300" onClick={() => {
-                  setCurrentCourse(index)
-                }}>
+                <li 
+                  key={index} 
+                  className="flex items-center p-2 bg-gray-800 rounded-lg cursor-pointer hover:bg-gray-700 transition-colors duration-300" 
+                  onClick={() => setCurrentCourse(index)}
+                >
                   <Play className="h-5 w-5 text-blue-500 flex-shrink-0 mr-2" />
                   <span className="text-gray-200 font-sans flex-grow truncate">{course.title}</span>
-                  {/* <span className="text-sm text-gray-400 ml-auto font-sans">{course.duration}</span> */}
                   {completedCourses[currentModule]?.includes(index) ? (
                     <Check className="h-5 w-5 text-green-500 flex-shrink-0 ml-2" />
                   ) : (
-                    <div className="h-5 w-5 flex-shrink-0 ml-2" /> // Placeholder to maintain consistent spacing
+                    <div className="h-5 w-5 flex-shrink-0 ml-2" />
                   )}
                 </li>
               ))}
@@ -555,8 +573,8 @@ function CoursePlatformContent() {
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   const renderShorts = () => {
     return (
@@ -747,14 +765,14 @@ function CoursePlatformContent() {
       return false;
     }
 
-    // Para LEAD, apenas módulo 5 está desbloqueado
+    // Para LEAD, apenas as 3 primeiras aulas do módulo 1 estão desbloqueadas
     if (session?.user?.accessLevel === 'LEAD') {
-      return moduleIndex !== 4; // retorna false apenas para módulo 5 (index 4)
+      return moduleIndex !== 0; // Apenas módulo 1 desbloqueado
     }
 
     // Para LEAD_PLUS, módulos 4 e 5 estão desbloqueados
     if (session?.user?.accessLevel === 'LEAD_PLUS') {
-      return !(moduleIndex === 3 || moduleIndex === 4); // retorna false para módulos 4 e 5
+      return !(moduleIndex === 3 || moduleIndex === 4);
     }
 
     // Para outros casos (ou não logado), todos os módulos estão bloqueados
@@ -793,6 +811,15 @@ function CoursePlatformContent() {
   };
 
   const handleNextCourse = () => {
+    // Para usuários LEAD, redireciona para home após completar a aula #03
+    if (session?.user?.accessLevel === 'LEAD' && 
+        currentModule === 0 && 
+        currentCourse === 3) {
+      setShowVideo(false);
+      setActiveTab('home');
+      return;
+    }
+
     const currentModuleCourses = modules[currentModule].courses;
     if (currentCourse < currentModuleCourses.length - 1) {
       setCurrentCourse(currentCourse + 1);
@@ -846,15 +873,22 @@ function CoursePlatformContent() {
   }
 
   const handleCourseClick = (moduleIndex: number, courseIndex: number) => {
-    // Para LEAD, apenas módulo 5 não abre webview
-    if (session?.user?.accessLevel === 'LEAD' && moduleIndex === 4) {
-      setCurrentCourse(courseIndex);
-      setShowVideo(true);
+    // Para LEAD, apenas as 4 primeiras aulas do módulo 1 não abrem webview
+    if (session?.user?.accessLevel === 'LEAD') {
+      if (moduleIndex === 0 && courseIndex < 4) {
+        setCurrentModule(moduleIndex);
+        setCurrentCourse(courseIndex);
+        setShowVideo(true);
+        return;
+      }
+      // Abre webview para todas as outras aulas
+      openWebView('https://mpago.li/1dbUF96');
       return;
     }
 
     // Para LEAD_PLUS, módulos 4 e 5 não abrem webview
     if (session?.user?.accessLevel === 'LEAD_PLUS' && (moduleIndex === 3 || moduleIndex === 4)) {
+      setCurrentModule(moduleIndex);
       setCurrentCourse(courseIndex);
       setShowVideo(true);
       return;
@@ -862,6 +896,7 @@ function CoursePlatformContent() {
 
     // Para ADMIN e STUDENT, nunca abre webview
     if (session?.user?.accessLevel === 'ADMIN' || session?.user?.accessLevel === 'STUDENT') {
+      setCurrentModule(moduleIndex);
       setCurrentCourse(courseIndex);
       setShowVideo(true);
       return;
@@ -877,15 +912,54 @@ function CoursePlatformContent() {
     return moduleCompletedCourses.length === modules[moduleIndex].courses.length;
   };
 
+  const isCourseLocked = (moduleIndex: number, courseIndex: number) => {
+    if (session?.user?.accessLevel === 'ADMIN' || session?.user?.accessLevel === 'STUDENT') {
+      return false;
+    }
+
+    // Para LEAD, bloqueia a partir da aula #04 do módulo 1
+    if (session?.user?.accessLevel === 'LEAD') {
+      if (moduleIndex === 0) {
+        return courseIndex >= 4; // Bloqueia a partir do índice 4 (Aula #04)
+      }
+      return true; // Bloqueia todos os outros módulos
+    }
+
+    // Para LEAD_PLUS, módulos 4 e 5 estão desbloqueados
+    if (session?.user?.accessLevel === 'LEAD_PLUS') {
+      return !(moduleIndex === 3 || moduleIndex === 4);
+    }
+
+    return true;
+  };
+
+  const AccessDeniedModal = () => {
+    if (!showAccessDeniedModal) return null;
+    
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
+          <h3 className="text-xl font-bold text-gray-200 mb-4">Acesso Restrito</h3>
+          <p className="text-gray-300 mb-4">Libere seu acesso para continuar com as próximas aulas!</p>
+          <button
+            onClick={() => setShowAccessDeniedModal(false)}
+            className="w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700 transition-colors"
+          >
+            Fechar
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+
+  
   if (!mounted) {
-    return null
+    return <LoadingScreen />
   }
 
-  if (status === "loading") {
-    return <div>Loading...</div>
-  }
-  
-  if (!session) {
+  // Se temos certeza que não há sessão
+  if (session === null) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-[#111111] text-gray-200 px-4 relative">
         <div 
@@ -936,19 +1010,11 @@ function CoursePlatformContent() {
       </div>
     )
   }
-          {/* <div className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between transform hover:scale-105">
-            <div>
-              <h2 className="text-2xl font-semibold mb-4">Como criar um produto do zero, sem sorte</h2>
-              <p className="text-gray-400 mb-4">Projeto paralelo ou criando produtos do zero em empresas? Esse é o caminho.</p>
-            </div>
-            <Button 
-              onClick={() => window.location.href = 'https://sbc-v6.vercel.app'}
-              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded self-end transition-colors duration-300"
-            >
-              Acessar curso
-            </Button>
-          </div> */}
-  
+
+  // Se a sessão está undefined (carregando) OU tem sessão mas user não carregou
+  if (session === undefined || !session?.user) {
+    return <LoadingScreen />
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
@@ -1055,7 +1121,7 @@ function CoursePlatformContent() {
               </div>
 
               <div className="flex-1 md:max-w-md">
-                  <div className="relative mb-2">
+                  {/* <div className="relative mb-2">
                     <div className={`bg-gradient-to-r from-gray-600 to-gray-700 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-300 flex justify-between items-center ${
                       hasCompletedRequiredLessons(completedCourses) 
                         ? 'hover:shadow-lg cursor-pointer' 
@@ -1080,7 +1146,7 @@ function CoursePlatformContent() {
                         </div>
                       </div>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* New personality test component */}
                   <div className="relative mb-4">
@@ -1190,7 +1256,7 @@ function CoursePlatformContent() {
                           <div className="relative aspect-video">
                             <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
                             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                              {isModuleLocked(moduleIndex) ? (
+                              {isCourseLocked(moduleIndex, courseIndex) ? (
                                 <Lock className="h-8 w-8 text-white" />
                               ) : (
                                 <Play className="h-8 w-8 text-white" />
@@ -1214,6 +1280,7 @@ function CoursePlatformContent() {
             ))}
             {renderShorts()}
             {renderArticles()}
+            <AccessDeniedModal />
           </div>
         ) : activeTab === 'shorts' ? (
           <div className="max-w-6xl mx-auto">
