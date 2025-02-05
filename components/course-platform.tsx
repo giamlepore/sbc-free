@@ -708,21 +708,34 @@ function CoursePlatformContent() {
       for (let courseIndex = 0; courseIndex < chapter.courses.length; courseIndex++) {
         if (!completedCourses[moduleIndex]?.includes(courseIndex)) {
           const course = chapter.courses[courseIndex];
+          
+          // Check if user is LEAD and trying to access module 5 (APIs)
+          const handleCourseClick = () => {
+            if (session?.user?.accessLevel === 'LEAD' && moduleIndex === 4) {
+              setShowAccessDeniedModal(true);
+              return;
+            }
+            
+            setCurrentModule(moduleIndex);
+            setCurrentCourse(courseIndex);
+            setShowVideo(true);
+          };
+
           return (
             <div className="mb-8">
               <h2 className="text-2xl font-bold mb-4 text-gray-200 font-sans">Continue de onde parou</h2>
               <div
                 className="bg-gray-800 rounded-lg overflow-hidden shadow-md cursor-pointer hover:shadow-lg transition-all duration-300 md:max-w-2xl"
-                onClick={() => {
-                  setCurrentModule(moduleIndex)
-                  setCurrentCourse(courseIndex)
-                  setShowVideo(true)
-                }}
+                onClick={handleCourseClick}
               >
                 <div className="relative aspect-video">
                   <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <Play className="h-12 w-12 text-white" />
+                    {session?.user?.accessLevel === 'LEAD' && moduleIndex === 4 ? (
+                      <Lock className="h-12 w-12 text-white" />
+                    ) : (
+                      <Play className="h-12 w-12 text-white" />
+                    )}
                   </div>
                 </div>
                 <div className="p-4">
@@ -731,12 +744,12 @@ function CoursePlatformContent() {
                 </div>
               </div>
             </div>
-          )
+          );
         }
       }
     }
-    return null
-  }
+    return null;
+  };
 
   const openWebView = (url: string) => {
     setWebViewUrl(url)
@@ -940,7 +953,9 @@ function CoursePlatformContent() {
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div className="bg-gray-800 rounded-lg p-6 max-w-sm w-full">
           <h3 className="text-xl font-bold text-gray-200 mb-4">Acesso Restrito</h3>
-          <p className="text-gray-300 mb-4">Libere seu acesso para continuar com as próximas aulas!</p>
+          <p className="text-gray-300 mb-4">Libere seu acesso para continuar com as próximas aulas! 
+          <br /> <br />  <span className="text-green-500">✅ Mas você tem aulas disponíveis para você:</span> 
+           <br /> <br /> Aulas #00, #01, #02 e #03, do Curso 01: Protocolos, Latência e DNS estão liberadas para você.</p>
           <button
             onClick={() => setShowAccessDeniedModal(false)}
             className="w-full bg-blue-600 text-white rounded-lg py-2 hover:bg-blue-700 transition-colors"
