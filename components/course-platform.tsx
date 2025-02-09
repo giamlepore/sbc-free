@@ -27,6 +27,7 @@ import { PMPersonalityTest } from './PMPersonalityTest'
 import { APITest } from './APITest'
 import { Certificate } from "@/components/Certificate"
 import { LoadingScreen } from './LoadingScreen'
+import { useRouter } from "next/navigation"
 
 interface CustomSession extends Session {
   user: {
@@ -329,6 +330,7 @@ function CoursePlatformContent() {
     completedCourses?: string[];
   } | null>(null);
   const [showAccessDeniedModal, setShowAccessDeniedModal] = useState(false);
+  const router = useRouter()
   
   
 
@@ -1175,6 +1177,21 @@ function CoursePlatformContent() {
                         className="bg-white text-purple-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-2"
                       >
                         Fazer teste
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="relative mb-4">
+                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg shadow-md hover:shadow-lg cursor-pointer transition-all duration-300 flex justify-between items-center">
+                      <div>
+                        <div className="font-bold text-lg">O que meu dev falou?</div>
+                        <div className="text-sm opacity-90">Entenda, aprenda e pergunte.</div>
+                      </div>
+                      <button
+                        onClick={() => router.push('/dev-falou/home-dev')}
+                        className="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors ml-2"
+                      >
+                        Acessar
                       </button>
                     </div>
                   </div>
