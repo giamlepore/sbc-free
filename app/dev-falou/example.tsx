@@ -124,13 +124,31 @@ const examples = [
   },
 ]
 
+interface Example {
+  option?: string;
+  devSaid: string;
+  learn: {
+    explanation: string;
+    examples: string[];
+  };
+  alternative: string;
+}
+
 interface ExampleContentProps {
-  initialOption?: string
+  initialOption?: string | Example;
 }
 
 export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
-  const option = initialOption || examples[0].option
-  const example = examples.find((ex) => ex.option === option) || examples[0]
+  const [example, setExample] = useState<Example | null>(null);
+  
+  useEffect(() => {
+    if (typeof initialOption === 'string') {
+      const foundExample = examples.find((ex: Example) => ex.option === initialOption) || examples[0];
+      setExample(foundExample);
+    } else {
+      setExample(initialOption);
+    }
+  }, [initialOption]);
 
   const [currentSection, setCurrentSection] = useState(0)
   const [currentExample, setCurrentExample] = useState(0)
@@ -149,6 +167,8 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
       pageRef.current.scrollTop = pageRef.current.scrollHeight
     }
   }, [])
+
+  if (!example) return null;
 
   return (
     <div

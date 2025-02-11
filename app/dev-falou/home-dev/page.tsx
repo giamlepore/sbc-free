@@ -15,8 +15,11 @@ function HomeContent() {
   const [inputValue, setInputValue] = useState("")
   const [selectedOption, setSelectedOption] = useState("")
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [showFeedbackSheet, setShowFeedbackSheet] = useState(false)
   
+  const MAX_CHARS = 500; // Defina o limite máximo de caracteres
+
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push('/')
@@ -36,6 +39,32 @@ function HomeContent() {
     setIsBottomSheetOpen(true)
   }
 
+  const handleSubmit = async () => {
+    setShowFeedbackSheet(false);
+    setIsLoading(true);
+    
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: inputValue }),
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch response');
+      
+      const data = await response.json();
+      setSelectedOption(data);
+      setIsBottomSheetOpen(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setShowFeedbackSheet(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-4">
@@ -54,19 +83,31 @@ function HomeContent() {
           <div className="relative mt-8 mb-12">
             <textarea
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              onChange={(e) => {
+                const text = e.target.value;
+                if (text.length <= MAX_CHARS) {
+                  setInputValue(text);
+                }
+              }}
+              maxLength={MAX_CHARS}
               placeholder="Como a SBC pode te ajudar hoje?"
               className="w-full min-h-[200px] bg-[#141414] text-gray-300 placeholder:text-gray-500 p-6 rounded-xl border border-[#1d4ed8]/20 focus:border-[#1d4ed8]/40 focus:outline-none transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.1)] resize-none align-top"
             />
+            <div className="absolute right-6 top-6 text-sm text-gray-400">
+              {inputValue.length}/{MAX_CHARS}
+            </div>
             <div className="absolute left-6 bottom-6 flex gap-3">
-              {inputValue && (
-                <button 
-                  className="p-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 scale-100 hover:scale-105"
-                  onClick={() => setShowFeedbackSheet(true)}
-                >
+              <button 
+                className="p-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-300 scale-100 hover:scale-105"
+                onClick={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
                   <SendHorizontal className="w-5 h-5 text-white" />
-                </button>
-              )}
+                )}
+              </button>
               <button className="p-2 hover:bg-gray-800 rounded-lg transition-colors">
                 <Link2 className="w-5 h-5 text-gray-400" />
               </button>
@@ -138,7 +179,7 @@ function HomeContent() {
       </div>
 
       <BottomSheet 
-        isOpen={isBottomSheetOpen} 
+        isOpen={isBottomSheetOpen && !isLoading} 
         onClose={() => setIsBottomSheetOpen(false)}
       >
         <ExampleContent initialOption={selectedOption} />
