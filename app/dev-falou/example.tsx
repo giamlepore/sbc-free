@@ -216,7 +216,7 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
         <Card className="bg-[#141414] border-gray-800 shadow-lg shadow-blue-900/5">
           <div className="p-6">
             <h2 className="text-xl font-semibold text-gray-400 mb-4">O que meu dev falou:</h2>
-            <TypewriterEffect text={example.devSaid} speed={20} onComplete={startNextSection} />
+            <TypewriterEffect text={example.devSaid} speed={10} onComplete={startNextSection} />
           </div>
         </Card>
 
@@ -228,7 +228,7 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
                 
               </div>
               <div className="space-y-6">
-                <TypewriterEffect text={example.learn.explanation} speed={20} onComplete={startNextSection} />
+                <TypewriterEffect text={example.learn.explanation} speed={10} onComplete={startNextSection} />
                 {currentSection >= 2 && (
                   <div className="space-y-4 mt-6">
                     <h3 className="text-lg font-medium text-emerald-400/80">Exemplos práticos:</h3>
@@ -237,7 +237,7 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
                         {currentExample >= index && (
                           <TypewriterEffect
                             text={ex}
-                            speed={20}
+                            speed={10}
                             onComplete={
                               index === example.learn.examples.length - 1 ? startNextSection : startNextExample
                             }
@@ -256,7 +256,7 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
           <Card className="bg-[#141414] border-gray-800 shadow-lg shadow-purple-900/5">
             <div className="p-6">
               <h2 className="text-xl font-semibold text-purple-400 mb-4">Alternativas:</h2>
-              <TypewriterEffect text={example.alternative} speed={20} />
+              <TypewriterEffect text={example.alternative} speed={10} />
             </div>
           </Card>
         )}
