@@ -1,5 +1,6 @@
 import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
+import { encode, decode } from 'html-entities';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -46,11 +47,13 @@ export async function POST(req: Request) {
       throw new Error('No response content received from OpenAI');
     }
 
-    // Processa a resposta para o formato esperado
-    const lines = response.split('\n').filter(line => line.trim());
+    // Sanitizar a resposta antes de processar
+    const sanitizedResponse = response;
+
+    const lines = sanitizedResponse.split('\n').filter(line => line.trim());
     const example = {
       option: lines[0].replace(/^[^:]*:\s*/, '').trim(),
-      devSaid: message,
+      devSaid: decodeURIComponent(message),
       learn: {
         explanation: lines.find(line => /^3\./.test(line))?.replace(/^[^.]*\.\s*/, '').trim() || '',
         examples: lines
@@ -60,9 +63,11 @@ export async function POST(req: Request) {
       alternative: lines[lines.length - 1].replace(/^[^.]*\.\s*/, '').trim()
     };
 
-    console.log('Parsed Response:', example);
-
-    return NextResponse.json(example);
+    return NextResponse.json(example, {
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      }
+    });
   } catch (error: unknown) {
     console.error('API Error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';

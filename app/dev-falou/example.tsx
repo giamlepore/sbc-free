@@ -197,7 +197,12 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
             <div className="p-6">
               <h2 className="text-xl font-semibold text-emerald-400 mb-4">Aprenda:</h2>
               <div className="space-y-6">
-                <TypewriterEffect text={example.learn.explanation} speed={20} onComplete={startNextSection} />
+                <TypewriterEffect 
+                  text={example.learn.explanation} 
+                  speed={20} 
+                  onComplete={startNextSection}
+                  splitParagraphs={true} 
+                />
                 {currentSection >= 2 && (
                   <div className="space-y-4 mt-6">
                     <h3 className="text-lg font-medium text-emerald-400/80">Exemplos práticos:</h3>

@@ -47,9 +47,11 @@ function HomeContent() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
         },
-        body: JSON.stringify({ message: inputValue }),
+        body: JSON.stringify({ 
+          message: encodeURIComponent(inputValue)  // Codifica o input
+        }),
       });
 
       if (!response.ok) throw new Error('Failed to fetch response');
@@ -90,7 +92,7 @@ function HomeContent() {
                 }
               }}
               maxLength={MAX_CHARS}
-              placeholder="Como a SBC pode te ajudar hoje?"
+              placeholder="O que seu dev falou? Qual conceito técnico não está claro?"
               className="w-full min-h-[200px] bg-[#141414] text-gray-300 placeholder:text-gray-500 p-6 rounded-xl border border-[#1d4ed8]/20 focus:border-[#1d4ed8]/40 focus:outline-none transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.1)] resize-none align-top"
             />
             <div className="absolute right-6 top-6 text-sm text-gray-400">
