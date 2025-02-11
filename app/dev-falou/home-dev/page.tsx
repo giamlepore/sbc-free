@@ -95,7 +95,7 @@ function HomeContent() {
               placeholder="O que seu dev falou? Qual conceito técnico não está claro?"
               className="w-full min-h-[200px] bg-[#141414] text-gray-300 placeholder:text-gray-500 p-6 rounded-xl border border-[#1d4ed8]/20 focus:border-[#1d4ed8]/40 focus:outline-none transition-all duration-300 shadow-[0_0_15px_rgba(37,99,235,0.1)] resize-none align-top"
             />
-            <div className="absolute right-6 top-6 text-sm text-gray-400">
+            <div className="absolute bottom-6 right-6 text-sm text-gray-400">
               {inputValue.length}/{MAX_CHARS}
             </div>
             <div className="absolute left-6 bottom-6 flex gap-3">

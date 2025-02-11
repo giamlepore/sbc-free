@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Check, Copy } from "lucide-react"
 import { TypewriterEffect } from "@/components/TypewriterEffect"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { SessionProvider } from "next-auth/react"
@@ -140,6 +140,7 @@ interface ExampleContentProps {
 
 export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
   const [example, setExample] = useState<Example | null>(null);
+  const [copied, setCopied] = useState(false)
   
   useEffect(() => {
     if (typeof initialOption === 'string') {
@@ -162,6 +163,13 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
     setCurrentExample((prev) => prev + 1)
   }, [])
 
+  const handleCopy = useCallback(() => {
+    const content = `${example?.devSaid}\n\n${example?.learn.explanation}\n\nExemplos:\n${example?.learn.examples.join('\n')}\n\nAlternativa:\n${example?.alternative}`
+    navigator.clipboard.writeText(content)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }, [example])
+
   useEffect(() => {
     if (pageRef.current) {
       pageRef.current.scrollTop = pageRef.current.scrollHeight
@@ -176,13 +184,33 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
       className="min-h-screen bg-black text-white flex flex-col items-center px-4 py-12 overflow-y-auto"
     >
       <div className="max-w-4xl w-full space-y-6">
-        <div className="flex items-center gap-4 mb-8">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white hover:bg-gray-800">
-              <ArrowLeft className="h-6 w-6" />
-            </Button>
-          </Link>
-          <h1 className="text-3xl font-bold tracking-tight">{example.option}</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div className="flex items-center gap-4">
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white hover:bg-gray-800">
+                <ArrowLeft className="h-6 w-6" />
+              </Button>
+            </Link>
+            <h1 className="text-3xl font-bold tracking-tight">{example.option}</h1>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-gray-400 hover:text-white hover:bg-gray-800 gap-2 self-start sm:self-auto ml-14 sm:ml-0"
+            onClick={handleCopy}
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                <span>Copiado!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                <span>Copiar conteúdo</span>
+              </>
+            )}
+          </Button>
         </div>
 
         <Card className="bg-[#141414] border-gray-800 shadow-lg shadow-blue-900/5">
@@ -195,14 +223,12 @@ export function ExampleContent({ initialOption = "" }: ExampleContentProps) {
         {currentSection >= 1 && (
           <Card className="bg-[#141414] border-gray-800 shadow-lg shadow-emerald-900/5">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-emerald-400 mb-4">Aprenda:</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-emerald-400">Aprenda:</h2>
+                
+              </div>
               <div className="space-y-6">
-                <TypewriterEffect 
-                  text={example.learn.explanation} 
-                  speed={20} 
-                  onComplete={startNextSection}
-                  splitParagraphs={true} 
-                />
+                <TypewriterEffect text={example.learn.explanation} speed={20} onComplete={startNextSection} />
                 {currentSection >= 2 && (
                   <div className="space-y-4 mt-6">
                     <h3 className="text-lg font-medium text-emerald-400/80">Exemplos práticos:</h3>
