@@ -216,7 +216,11 @@ const modules = [
   {
     title: 'Curso 06: AI, fora o hype',
     courses: [
-      { title: 'Módulo em construção', image: '/m6.png', video: 'https://player.vimeo.com/video/1016276876?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #60 - Introdução ao curso de IA', image: '/64.jpg', video: 'https://player.vimeo.com/video/1054112466?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #61 - Conceitos Fundamentais', image: '/60.jpg', video: 'https://player.vimeo.com/video/1054148008?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #62 - Abordagens para IA', image: '/61.jpg', video: 'https://player.vimeo.com/video/1055422670?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #63 - Matemática, Ciência de Dados e IA', image: '/62.jpg', video: 'https://player.vimeo.com/video/1055443670?badge=0&amp;autopause=0&amp;player_id=0&amp' },
+      { title: 'Aula #64 - Jogo de Conway', image: '/63.jpg', video: 'https://player.vimeo.com/video/1057366992?badge=0&amp;autopause=0&amp;player_id=0&amp' },
     ],
     tasks: [
       { title: 'Sem tarefas, por enquanto', completed: false },
